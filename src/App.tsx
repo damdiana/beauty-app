@@ -1,12 +1,31 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import { Input } from "./components/Input/Input.stories";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import Header from "./components/Header/Header";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <Header
+        nav={[
+          {
+            href: "https://github.com/damdiana?tab=repositories",
+            title: "Body",
+          },
+          {
+            href: "https://github.com/damdiana?tab=repositories",
+            title: "Face",
+          },
+          {
+            href: "https://github.com/damdiana?tab=repositories",
+            title: "New",
+          },
+          {
+            href: "https://github.com/damdiana?tab=repositories",
+            title: "Trending",
+          },
+        ]}
+      />
+    </>
+  );
 }
 
 export default App;
