@@ -22,7 +22,7 @@ const Input = ({
   required,
 }: PropsWithChildren<Props>) => {
   return (
-    <div>
+    <div className="relative inline-block">
       <input
         name={name}
         placeholder={placeholder}
@@ -35,7 +35,7 @@ const Input = ({
       {icon !== undefined && (
         <FontAwesomeIcon
           icon={icon}
-          className="absolute left-6 top-7 text-gray-400"
+          className="absolute left-2 top-3.5 text-gray-400"
         />
       )}
     </div>
