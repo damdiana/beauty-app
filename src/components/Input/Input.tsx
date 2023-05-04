@@ -31,13 +31,13 @@ const Input = ({
         required={required}
         type={type}
         className={`input ${className} ${size} bg-white rounded-2xl w-60 p-2 ${
-          icon !== undefined ? "pl-7" : ""
+          icon !== undefined ? "pl-8" : ""
         }`}
       />
       {icon !== undefined && (
         <FontAwesomeIcon
           icon={icon}
-          className={`absolute left-2 top-3.5 text-gray-400 ${size}`}
+          className={`absolute left-2 top-3 pl-1 text-gray-400 ${size}`}
         />
       )}
     </div>
