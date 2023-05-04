@@ -11,6 +11,7 @@ type Props = {
   className?: string;
   icon?: IconProp;
   required?: boolean;
+  size: "small" | "medium" | "large";
 };
 
 const Input = ({
@@ -20,6 +21,7 @@ const Input = ({
   className,
   icon,
   required,
+  size,
 }: PropsWithChildren<Props>) => {
   return (
     <div className="relative inline-block">
@@ -28,14 +30,14 @@ const Input = ({
         placeholder={placeholder}
         required={required}
         type={type}
-        className={`input ${className} bg-white rounded-2xl w-60 p-2 ${
+        className={`input ${className} ${size} bg-white rounded-2xl w-60 p-2 ${
           icon !== undefined ? "pl-7" : ""
         }`}
       />
       {icon !== undefined && (
         <FontAwesomeIcon
           icon={icon}
-          className="absolute left-2 top-3.5 text-gray-400"
+          className={`absolute left-2 top-3.5 text-gray-400 ${size}`}
         />
       )}
     </div>

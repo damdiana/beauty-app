@@ -5,6 +5,12 @@ import { StoryFn, Meta } from "@storybook/react";
 export default {
   title: "Input",
   component: InputComponent,
+  argTypes: {
+    size: {
+      options: ["small", "medium", "large"],
+      control: { type: "radio" },
+    },
+  },
 } as Meta<typeof InputComponent>;
 
 const Template: StoryFn<typeof InputComponent> = (args) => (
