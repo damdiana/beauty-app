@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from "react";
-import "./Button.css";
+import "../Button-Link.css";
 type Props = {
   variant: "text" | "outline" | "full";
   color?: "beige" | "black";
@@ -21,7 +21,7 @@ const Button = ({
     <button
       type={type}
       onClick={onClick}
-      className={`btn btn-${color} btn-${variant} ${className} btn-${size}`}
+      className={`btn ${color} ${variant} ${className} btn-${size}`}
     >
       {children}
     </button>
