@@ -4,7 +4,6 @@ import "../Button-Link.css";
 type Props = {
   variant: "text" | "outline" | "full";
   color?: "beige" | "black";
-  children: string;
   href: string;
   className?: string;
 };
