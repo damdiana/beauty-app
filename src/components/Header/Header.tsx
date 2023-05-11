@@ -1,13 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faMagnifyingGlass,
-  faUser,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Link from "../Button-Link/Link/Link";
 import "./Header.css";
-import Input from "../Input/Input";
 import { useState } from "react";
 import Button from "../Button-Link/Button/Button";
 
@@ -35,12 +29,7 @@ const Header = ({ nav }: Props) => {
           <FontAwesomeIcon icon={showNav ? faXmark : faBars} />
         </Button>
 
-        <img
-          src="../src/assets/logo3.png"
-          alt="logo"
-          width="80"
-          className="logo"
-        />
+        <img src="/assets/logo.png" alt="logo" width="80" className="logo" />
         <Link href="" variant="text" color="black">
           <FontAwesomeIcon icon={faUser} className="pr-2" />
           Account

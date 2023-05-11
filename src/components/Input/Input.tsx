@@ -5,13 +5,15 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { IconProp, icon } from "@fortawesome/fontawesome-svg-core";
 
 type Props = {
-  placeholder: string;
+  placeholder?: string;
   name: string;
   type: HTMLInputTypeAttribute;
   className?: string;
   icon?: IconProp;
   required?: boolean;
+  value?: string;
   size: "small" | "medium" | "large";
+  id?: string;
 };
 
 const Input = ({
@@ -22,15 +24,17 @@ const Input = ({
   icon,
   required,
   size,
+  id,
 }: PropsWithChildren<Props>) => {
   return (
-    <div className="relative inline-block">
+    <div className={`${className} relative inline-block`}>
       <input
         name={name}
         placeholder={placeholder}
         required={required}
         type={type}
-        className={`input ${className} ${size} bg-white rounded-2xl w-60 p-2 ${
+        id={id}
+        className={`input ${size} bg-white rounded-2xl w-full p-2 ${
           icon !== undefined ? "pl-7" : ""
         }`}
       />

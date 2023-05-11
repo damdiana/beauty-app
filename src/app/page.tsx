@@ -1,7 +1,7 @@
-import "./App.css";
-import Header from "./components/Header/Header";
+"use client";
+import Header from "@/components/Header/Header";
 
-function App() {
+export default function Home() {
   return (
     <>
       <Header
@@ -27,5 +27,3 @@ function App() {
     </>
   );
 }
-
-export default App;
