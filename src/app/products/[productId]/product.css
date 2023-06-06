@@ -1,0 +1,7 @@
+.tabs-border-bottom {
+    border-bottom: 1px solid #000;
+}
+
+.tab--active {
+    border-bottom: 3px solid #000;
+}

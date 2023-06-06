@@ -12,7 +12,12 @@ const ProductCard = ({ product }: Props) => {
   return (
     <section className="text-center cursor-pointer my-2 py-2">
       <div className="flex-col p-2">
-        <Link href="#" variant="text" color="black" className="no-underline">
+        <Link
+          href={`/products/${product.id}`}
+          variant="text"
+          color="black"
+          className="no-underline"
+        >
           <img
             src={product.images[0]}
             alt={product.name}
