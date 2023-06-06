@@ -1,6 +1,6 @@
 import Header from "@/components/Header/Header";
 import ProductCard from "@/components/ProductCard/ProductCard";
-import fetchProducts from "@/services/ProductAPI";
+import { fetchProducts } from "@/services/ProductAPI";
 
 export default async function Home() {
   let resp = await fetchProducts();

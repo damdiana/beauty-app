@@ -16,6 +16,7 @@ const ProductImages = ({ images }: Props) => {
       <div className="flex-col overflow-auto componentHeight">
         {images.map((image) => (
           <img
+            key={image.src}
             src={image.src}
             alt={image.alt}
             height="150"
