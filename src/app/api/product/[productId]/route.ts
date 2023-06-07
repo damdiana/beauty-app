@@ -42,7 +42,9 @@ export async function GET(
     INNER JOIN productimages ON products.id = productimages.product_id
     WHERE products.id = ${params.productId};`;
 
-    productRows[0].images = productImagesRows;
+    productRows[0].images = productImagesRows.map(
+      (productImage) => productImage.image
+    );
 
     return NextResponse.json({
       data: productRows[0],
