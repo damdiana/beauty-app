@@ -31,7 +31,7 @@ async function fetchProducts(): Promise<
     let jsonResp = await resp.json();
     return {
       ok: false,
-      message: "Error",
+      message: jsonResp.message ?? "Something went wrong. Please try again.",
     };
   }
 }
