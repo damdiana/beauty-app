@@ -1,5 +1,5 @@
 "use client";
-
+import NextLink from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Link from "../Button-Link/Link/Link";
@@ -30,8 +30,9 @@ const Header = ({ nav }: Props) => {
         >
           <FontAwesomeIcon icon={showNav ? faXmark : faBars} />
         </Button>
-
-        <img src="/assets/logo.png" alt="logo" width="80" className="logo" />
+        <NextLink href="/">
+          <img src="/assets/logo.png" alt="logo" width="80" className="logo" />
+        </NextLink>
         <Link href="" variant="text" color="black">
           <FontAwesomeIcon icon={faUser} className="pr-2" />
           Account
