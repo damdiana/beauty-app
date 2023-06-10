@@ -30,13 +30,11 @@ const Header = ({ nav }: Props) => {
         >
           <FontAwesomeIcon icon={showNav ? faXmark : faBars} />
         </Button>
-        <NextLink href="/">
-          <img src="/assets/logo.png" alt="logo" width="80" className="logo" />
-        </NextLink>
-        <Link href="" variant="text" color="black">
+        <img src="/assets/logo.png" alt="logo" width="80" className="logo" />
+        <NextLink href="/login">
           <FontAwesomeIcon icon={faUser} className="pr-2" />
           Account
-        </Link>
+        </NextLink>
       </div>
       {nav !== undefined && (
         <nav className={` bg-black px-4 py-2 ${showNav ? "nav--open" : ""}`}>
