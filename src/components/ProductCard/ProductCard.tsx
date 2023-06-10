@@ -11,14 +11,14 @@ type Props = {
 const ProductCard = ({ product }: Props) => {
   return (
     <section className="text-center cursor-pointer my-2 py-2">
-      <img
-        src={product.images[0]}
-        alt={product.name}
-        width="250"
-        className="m-auto p-2"
-      />
       <div className="flex-col p-2">
         <Link href="#" variant="text" color="black" className="no-underline">
+          <img
+            src={product.images[0]}
+            alt={product.name}
+            width="250"
+            className="m-auto p-2"
+          />
           <span className="font-bold tracking-wide uppercase block mb-0.5">
             {product.brand_name}
           </span>
