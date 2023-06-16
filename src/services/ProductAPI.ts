@@ -18,9 +18,7 @@ async function fetchProducts(): Promise<
       message: string;
     }
 > {
-  let resp = await fetch(`http://${process.env.VERCEL_URL}/api/products`, {
-    cache: "no-store",
-  });
+  let resp = await fetch(`http://${process.env.VERCEL_URL}/api/products`);
   if (resp.ok) {
     let { data }: { data: Product[] } = await resp.json();
     return {
@@ -47,10 +45,7 @@ async function fetchProduct(productId: string): Promise<
     }
 > {
   let resp = await fetch(
-    `http://${process.env.VERCEL_URL}/api/products/${productId}`,
-    {
-      cache: "no-store",
-    }
+    `http://${process.env.VERCEL_URL}/api/products/${productId}`
   );
   if (resp.ok) {
     let { data }: { data: Product } = await resp.json();
