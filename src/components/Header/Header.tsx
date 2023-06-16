@@ -30,7 +30,9 @@ const Header = ({ nav }: Props) => {
         >
           <FontAwesomeIcon icon={showNav ? faXmark : faBars} />
         </Button>
-        <img src="/assets/logo.png" alt="logo" width="80" className="logo" />
+        <NextLink href="/">
+          <img src="/assets/logo.png" alt="logo" width="80" className="logo" />
+        </NextLink>{" "}
         <NextLink href="/login">
           <FontAwesomeIcon icon={faUser} className="pr-2" />
           Account
