@@ -4,23 +4,28 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   try {
     const client = await db.connect();
-    const { rows: productRows } = await client.sql`SELECT
-        products.id,
-        products.brand_id,
-        brands.name as "brand_name",
-        products.name,
-        products.description,
-        products.ingredients
-    FROM products
-    INNER JOIN brands ON products.brand_id = brands.id;
-`;
 
-    const { rows: productImagesRows } = await client.sql`SELECT
+    const [productsResponse, imagesResponse] = await Promise.all([
+      client.sql`SELECT
+      products.id,
+      products.brand_id,
+      brands.name as "brand_name",
+      products.name,
+      products.description,
+      products.ingredients
+  FROM products
+  INNER JOIN brands ON products.brand_id = brands.id;
+`,
+      client.sql`SELECT
 	    products.id,
 	    products.name,
 	    productimages.image
     FROM products
-    INNER JOIN productimages ON products.id = productimages.product_id;`;
+    INNER JOIN productimages ON products.id = productimages.product_id;`,
+    ]);
+
+    const productRows = productsResponse.rows;
+    const productImagesRows = imagesResponse.rows;
 
     productRows.forEach((productRow) => {
       productRow.images = [];

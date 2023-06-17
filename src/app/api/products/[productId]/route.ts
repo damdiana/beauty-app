@@ -11,17 +11,30 @@ export async function GET(
 ) {
   try {
     const client = await db.connect();
-    const { rows: productRows } = await client.sql`SELECT
-        products.id,
-        products.brand_id,
-        brands.name as "brand_name",
-        products.name,
-        products.description,
-        products.ingredients
+
+    const [productResponse, imagesResponse] = await Promise.all([
+      client.sql`SELECT
+      products.id,
+      products.brand_id,
+      brands.name as "brand_name",
+      products.name,
+      products.description,
+      products.ingredients
+  FROM products
+  INNER JOIN brands ON products.brand_id = brands.id
+  WHERE products.id = ${params.productId};
+`,
+      client.sql`SELECT
+	    products.id,
+	    products.name,
+	    productimages.image
     FROM products
-    INNER JOIN brands ON products.brand_id = brands.id
-    WHERE products.id = ${params.productId};
-`;
+    INNER JOIN productimages ON products.id = productimages.product_id
+    WHERE products.id = ${params.productId};`,
+    ]);
+
+    const productRows = productResponse.rows;
+    const productImagesRows = imagesResponse.rows;
 
     if (productRows.length === 0) {
       return NextResponse.json(
@@ -33,14 +46,6 @@ export async function GET(
         }
       );
     }
-
-    const { rows: productImagesRows } = await client.sql`SELECT
-	    products.id,
-	    products.name,
-	    productimages.image
-    FROM products
-    INNER JOIN productimages ON products.id = productimages.product_id
-    WHERE products.id = ${params.productId};`;
 
     productRows[0].images = productImagesRows.map(
       (productImage) => productImage.image
