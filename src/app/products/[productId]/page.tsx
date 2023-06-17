@@ -6,6 +6,7 @@ import { use, useState } from "react";
 import "./product.css";
 import { Metadata } from "next";
 import { ProductScreen } from "@/components/ProductScreen";
+import FeedbackForm from "@/components/FeedbackForm/FeedbackForm";
 
 export async function generateMetadata({
   params,
@@ -59,6 +60,7 @@ export default async function Page({
       ) : (
         <p> {resp.message} </p>
       )}
+      <FeedbackForm />
     </div>
   );
 }
