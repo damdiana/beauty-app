@@ -67,10 +67,15 @@ export default function ProfileLayout({
             >
               <FontAwesomeIcon icon={faStar} className="pr-1" /> My favorites
             </Link>
-            <p className="mb-2 p-1">
+            <Link
+              href="/profile/help"
+              className={` mb-2 p-1 ${
+                currentRoute === "/profile/help" ? activeClasses : ""
+              }`}
+            >
               <FontAwesomeIcon icon={faQuestion} className="pl-1" />
               <span className="pl-2"> Help </span>
-            </p>
+            </Link>
             <Button variant="text" color="black" size="medium">
               <FontAwesomeIcon icon={faRightFromBracket} /> Log Out
             </Button>
