@@ -1,0 +1,20 @@
+summary {
+    list-style: none;
+}
+
+/* Safari */
+
+summary ::-webkit-details-marker {
+    list-style: none;
+}
+
+details[open] {
+    border-top: 0.2em solid black;
+    .faIcon {
+       transform: rotate(180deg);
+  }
+}
+
+.faIcon {
+    transition: transform 0.1s linear;
+}
