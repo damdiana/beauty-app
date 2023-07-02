@@ -56,9 +56,14 @@ export default function ProfileLayout({
               <FontAwesomeIcon icon={faHouse} className="pr-3" />
               Account Details
             </Link>
-            <p className="p-1">
+            <Link
+              href="/profile/myprofile"
+              className={`p-1 ${
+                currentRoute === "/profile/myprofile" ? activeClasses : ""
+              }`}
+            >
               <FontAwesomeIcon icon={faUser} className="pr-2" /> My Profile
-            </p>
+            </Link>
             <Link
               href="/profile/favorites"
               className={`p-1 ${
