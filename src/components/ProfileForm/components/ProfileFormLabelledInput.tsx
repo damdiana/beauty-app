@@ -1,25 +1,18 @@
-import { HTMLInputTypeAttribute, PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 
 type Props = {
   label: string;
-  name: string;
-  value?: string;
-  type: HTMLInputTypeAttribute;
-  className?: string;
-};
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 const ProfileFormLabelledInput = ({
   label,
-  name,
-  value,
-  type,
-  className,
   children,
+  ...rest
 }: PropsWithChildren<Props>) => {
   return (
     <div>
       <label>
-        <input name={name} value={value} type={type} className={className} />
+        <input {...rest} />
         <span className="pl-1"> {label} </span>
         {children}
       </label>
