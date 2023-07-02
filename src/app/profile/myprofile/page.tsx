@@ -12,7 +12,6 @@ const MyProfile = () => {
     <div className="w-full h-full flex">
       <div className="m-2 p-1 border w-full flex flex-col h-3/4 relative">
         <h2 className="text-lg m-2 mb-4"> PROFILE INFORMATION </h2>
-
         <ProfileForm />
       </div>
     </div>
