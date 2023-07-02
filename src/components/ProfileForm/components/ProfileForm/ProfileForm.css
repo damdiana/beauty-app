@@ -1,0 +1,6 @@
+.profile-progress::-webkit-progress-bar {
+    background-color: white;
+ }
+ .profile-progress::-webkit-progress-value {
+    background-color: black;
+ }
