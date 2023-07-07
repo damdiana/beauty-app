@@ -84,7 +84,7 @@ const ProfileForm = () => {
           <progress
             max={STEP_COMPONENTS.length - 1}
             value={step}
-            className="border item-center"
+            className="border item-center profile-progress"
           />
         </div>
       </form>

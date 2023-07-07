@@ -43,7 +43,7 @@ const ProfileFormStep0 = ({
   };
 
   return (
-    <>
+    <div className="flex flex-col">
       <fieldset className="my-3">
         <legend className="text-base mb-2 font-bold">
           Which gender do you identify as?
@@ -90,7 +90,7 @@ const ProfileFormStep0 = ({
           />
         </div>
       </fieldset>
-      <fieldset className="mb-2">
+      <fieldset className="mb-3">
         <legend className="mb-2 font-bold">What is your date of birth?</legend>
         <label>
           <input
@@ -110,7 +110,7 @@ const ProfileFormStep0 = ({
           />
         </label>
       </fieldset>
-      <fieldset className="mb-2 flex flex-col">
+      <fieldset className="mb-3 flex flex-col">
         <legend className="mb-2 font-bold">
           What is your goal? (select as many as needed)
         </legend>
@@ -149,10 +149,12 @@ const ProfileFormStep0 = ({
           <input type="text" className="border" />
         </ProfileFormLabelledInput>
       </fieldset>
-      <ProfileFormNavigationButtons
-        onNext={onNext !== undefined ? () => onNext(localData) : undefined}
-      />
-    </>
+      <div>
+        <ProfileFormNavigationButtons
+          onNext={onNext !== undefined ? () => onNext(localData) : undefined}
+        />
+      </div>
+    </div>
   );
 };
 
