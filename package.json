@@ -12,14 +12,16 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
-    "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@types/node": "20.1.2",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "@vercel/postgres": "^0.3.0",
     "autoprefixer": "10.4.14",
+    "bcrypt": "^5.1.0",
+    "email-validator": "^2.0.4",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
     "next": "13.4.4",
@@ -37,6 +39,7 @@
     "@storybook/react": "^7.0.7",
     "@storybook/react-vite": "^7.0.7",
     "@storybook/testing-library": "^0.0.14-next.2",
+    "@types/bcrypt": "^5.0.0",
     "eslint-plugin-storybook": "^0.6.11",
     "storybook": "^7.0.7"
   }
