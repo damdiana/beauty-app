@@ -45,7 +45,7 @@ export default function ProfileLayout({
       />
       <main className="h-screen">
         <div className="flex mt-4 w-full h-full">
-          <div className="flex flex-col m-2 p-1 border gap-2 w-4/12 h-2/6">
+          <div className="flex flex-col m-2 p-1 border gap-2 w-3/12 h-min">
             <h1 className="text-lg font-bold">My account</h1>
             <Link
               href="/profile/settings"
@@ -57,12 +57,20 @@ export default function ProfileLayout({
               Account Details
             </Link>
             <Link
-              href="/profile/myprofile"
+              href="/profile"
               className={`p-1 ${
-                currentRoute === "/profile/myprofile" ? activeClasses : ""
+                currentRoute === "/profile" ? activeClasses : ""
               }`}
             >
               <FontAwesomeIcon icon={faUser} className="pr-2" /> My Profile
+            </Link>
+            <Link
+              href="/profile/editprofile"
+              className={`p-1 ${
+                currentRoute === "/profile/editprofile" ? activeClasses : ""
+              }`}
+            >
+              <FontAwesomeIcon icon={faUser} className="pr-2" /> Edit Profile
             </Link>
             <Link
               href="/profile/favorites"
