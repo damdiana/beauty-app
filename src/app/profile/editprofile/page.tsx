@@ -3,11 +3,11 @@ import ProfileForm from "@/components/ProfileForm/components/ProfileForm/Profile
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "My Profile",
-  description: "My Profile",
+  title: "Edit Profile",
+  description: "Edit Profile",
 };
 
-const MyProfile = () => {
+const EditProfile = () => {
   return (
     <div className="w-full h-full flex">
       <div className="m-2 p-1 border w-full flex flex-col h-3/4 relative">
@@ -18,4 +18,4 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default EditProfile;
