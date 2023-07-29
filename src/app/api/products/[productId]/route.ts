@@ -1,3 +1,4 @@
+import { getProduct } from "@/model/ProductModel";
 import { db } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
@@ -10,33 +11,8 @@ export async function GET(
   }
 ) {
   try {
-    const client = await db.connect();
-
-    const [productResponse, imagesResponse] = await Promise.all([
-      client.sql`SELECT
-      products.id,
-      products.brand_id,
-      brands.name as "brand_name",
-      products.name,
-      products.description,
-      products.ingredients
-  FROM products
-  INNER JOIN brands ON products.brand_id = brands.id
-  WHERE products.id = ${params.productId};
-`,
-      client.sql`SELECT
-	    products.id,
-	    products.name,
-	    productimages.image
-    FROM products
-    INNER JOIN productimages ON products.id = productimages.product_id
-    WHERE products.id = ${params.productId};`,
-    ]);
-
-    const productRows = productResponse.rows;
-    const productImagesRows = imagesResponse.rows;
-
-    if (productRows.length === 0) {
+    let product = await getProduct(params.productId);
+    if (product === undefined) {
       return NextResponse.json(
         {
           message: "Product not found.",
@@ -45,15 +21,16 @@ export async function GET(
           status: 404,
         }
       );
+    } else {
+      return NextResponse.json(
+        {
+          data: product,
+        },
+        {
+          status: 200,
+        }
+      );
     }
-
-    productRows[0].images = productImagesRows.map(
-      (productImage) => productImage.image
-    );
-
-    return NextResponse.json({
-      data: productRows[0],
-    });
   } catch (err) {
     console.error(err);
     return NextResponse.json(

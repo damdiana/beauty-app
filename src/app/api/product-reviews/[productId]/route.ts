@@ -1,3 +1,4 @@
+import { getProduct } from "@/model/ProductModel";
 import { getProductReviews } from "@/model/ProductReviewsModel";
 import { NextResponse } from "next/server";
 
@@ -8,6 +9,17 @@ export async function GET(
   const { productId } = params;
 
   try {
+    let product = await getProduct(productId);
+    if (product === undefined) {
+      return NextResponse.json(
+        {
+          message: "There is no product with this ID",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
     let reviews = await getProductReviews(productId);
     if (reviews !== undefined) {
       return NextResponse.json(
