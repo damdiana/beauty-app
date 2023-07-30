@@ -1,12 +1,13 @@
-import Button from "@/components/Button-Link/Button/Button";
 import Header from "@/components/Header/Header";
-import ProductImages from "@/components/ProductImages/ProductImages";
-import { Product, fetchProduct } from "@/services/ProductAPI";
-import { use, useState } from "react";
+import { fetchProduct } from "@/services/ProductAPI";
 import "./product.css";
 import { Metadata } from "next";
 import { ProductScreen } from "@/components/ProductScreen";
 import FeedbackForm from "@/components/FeedbackForm/FeedbackForm";
+import { ViewRating } from "@/components/ViewRating";
+import { fetchProductReviews } from "@/services/ProductReviewsAPI";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFaceFrownOpen } from "@fortawesome/free-regular-svg-icons";
 
 export async function generateMetadata({
   params,
@@ -31,7 +32,8 @@ export default async function Page({
 }: {
   params: { productId: string };
 }) {
-  let resp = await fetchProduct(params.productId);
+  let productResp = await fetchProduct(params.productId);
+  let reviewsResp = await fetchProductReviews(params.productId);
 
   return (
     <div>
@@ -55,11 +57,31 @@ export default async function Page({
           },
         ]}
       />
-      {resp.ok === true ? (
-        <ProductScreen product={resp.product} />
+      {productResp.ok === true ? (
+        <ProductScreen product={productResp.product} />
       ) : (
-        <p> {resp.message} </p>
+        <p> {productResp.message} </p>
       )}
+      <h2 className="font-bold text-lg border-t border-solid border-grey m-2 p-2">
+        Ratings & Reviews
+      </h2>
+      {reviewsResp.ok === true && reviewsResp.productReviews.length === 0 && (
+        <div className="flex items-center">
+          <p className="font-bold mx-2"> No reviews for this product yet </p>
+          <FontAwesomeIcon icon={faFaceFrownOpen} />
+        </div>
+      )}
+      {reviewsResp.ok === true &&
+        reviewsResp.productReviews.map((review) => (
+          <ViewRating key={review.id} review={review} />
+        ))}
+      {reviewsResp.ok === false && (
+        <div className="flex items-center">
+          <p className="font-bold mx-2"> Unable to show the reviews </p>
+          <FontAwesomeIcon icon={faFaceFrownOpen} />
+        </div>
+      )}
+
       <FeedbackForm />
     </div>
   );
