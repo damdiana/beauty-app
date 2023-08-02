@@ -29,12 +29,8 @@ CREATE TABLE ProductReviews (
     user_id VARCHAR(255) NOT NULL,
     product_id VARCHAR(255) NOT NULL,
     product_name VARCHAR(255) NOT NULL,
-<<<<<<< HEAD
     recommending BOOLEAN NOT NULL DEFAULT FALSE,
     title VARCHAR(255) NOT NULL,
-=======
-    recomanding BOOLEAN NOT NULL DEFAULT FALSE,
->>>>>>> 5773056 (Add API and persistence for product reviews (#75))
     review TEXT NOT NULL ,
     rating NUMERIC CHECK (rating between 0 and 5 ) NOT NULL,
     UNIQUE(user_id, product_id)

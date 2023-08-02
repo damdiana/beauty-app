@@ -1,3 +1,4 @@
+import { getProduct } from "@/model/ProductModel";
 import {
   getProductReviewByUser,
   insertReview,
@@ -20,11 +21,10 @@ export async function POST(request: Request) {
   }
   if (
     typeof body.product_id !== "string" ||
-    typeof body.user_id !== "string" ||
-    typeof body.product_name !== "string" ||
     typeof body.review !== "string" ||
     typeof body.title !== "string" ||
-    typeof body.rating !== "number"
+    typeof body.rating !== "number" ||
+    typeof body.recommending !== "boolean"
   ) {
     return NextResponse.json(
       {
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
   if (body.rating > 5) {
     return NextResponse.json(
       {
-        message: "rating maximum of 5",
+        message: "Rating maximum of 5",
       },
       {
         status: 400,
@@ -48,9 +48,23 @@ export async function POST(request: Request) {
   }
 
   try {
+    let product = await getProduct(body.product_id);
+    if (product === undefined) {
+      return NextResponse.json(
+        {
+          message: "There is no product with this ID",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
     let review = await getProductReviewByUser(body.user_id, body.product_id);
-    console.log(body);
     if (review === undefined) {
+      // IMPORTANT: this is hardcoded because we don't yet have user management.
+      // TO BE DELETED once we integrate authentication
+      body.user_id = "Diana13";
+      body.product_name = "test";
       await insertReview(body);
       const insertedReview = await getProductReviewByUser(
         body.user_id,

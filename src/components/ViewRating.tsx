@@ -18,7 +18,7 @@ const ViewRating = ({ review }: { review: ProductReview }) => {
         <time dateTime={new Date(review.added_at).toISOString()}>
           {formatDateTime(new Date(review.added_at))}
         </time>
-        <p className="font-bold"> {review.product_name} </p>
+        <p className="font-bold"> {review.title} </p>
         <p className="mb-2"> {review.review}</p>
         <div className="flex">
           <p className="font-bold mr-1"> Recomanding this product? </p>
