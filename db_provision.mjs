@@ -10,7 +10,13 @@ dotenv.config({
 const client = await db.connect();
 
 // createProductsTable();
-fetchAndInsertProducts("mask");
+await fetchAndInsertProducts("mask");
+await fetchAndInsertProducts("eyes");
+await fetchAndInsertProducts("facecream");
+await fetchAndInsertProducts("toner");
+await fetchAndInsertProducts("serum");
+await fetchAndInsertProducts("clenser");
+await fetchAndInsertProducts("lips");
 // createProductImagesTable();
 
 async function fetchAndInsertProducts(query) {
