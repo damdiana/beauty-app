@@ -9,18 +9,48 @@ dotenv.config({
 
 const client = await db.connect();
 
-// createProductsTable();
-await fetchAndInsertProducts("mask");
-await fetchAndInsertProducts("eyes");
-await fetchAndInsertProducts("facecream");
-await fetchAndInsertProducts("toner");
-await fetchAndInsertProducts("serum");
-await fetchAndInsertProducts("clenser");
-await fetchAndInsertProducts("lips");
-// createProductImagesTable();
+const categoryIds = await fetchAndInsertCategories();
+categoryIds.forEach((categId) => {
+  fetchAndInsertProducts(categId);
+});
 
-async function fetchAndInsertProducts(query) {
-  const url = `https://sephora.p.rapidapi.com/products/v2/list?number=1&size=30&country=AU&language=en-AU&query=${query}`;
+async function fetchAndInsertCategories() {
+  const url = "https://sephora.p.rapidapi.com/categories/v2/list";
+  const options = {
+    method: "GET",
+    headers: {
+      "X-RapidAPI-Key": process.env.SEPHORA_API_KEY,
+      "X-RapidAPI-Host": "sephora.p.rapidapi.com",
+    },
+  };
+  try {
+    const response = await fetch(url, options);
+    const result = await response.json();
+    let myCategories = result.data;
+
+    // We don't want all categories. Just a few
+    // of them to have enough "real" data for our app
+    myCategories = myCategories.slice(0, 30);
+
+    const categoryIds = await Promise.all(
+      myCategories.map((category) =>
+        insertCategory(
+          category.id,
+          category.attributes.label,
+          category.attributes["slug-url"]
+        )
+      )
+    );
+
+    return categoryIds;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function fetchAndInsertProducts(categId) {
+  const url = `https://sephora.p.rapidapi.com/products/v2/list?number=1&size=30&category=${categId}`;
+
   const options = {
     method: "GET",
     headers: {
@@ -45,6 +75,7 @@ async function fetchAndInsertProducts(query) {
         product.id,
         product.brand_id,
         product.name,
+        categId,
         product.description,
         product.ingredients
       );
@@ -74,19 +105,46 @@ function fromSephoraObject(sephoraProduct) {
   };
 }
 
-async function insertProduct(id, brand_id, name, description, ingredients) {
+async function insertCategory(id, name, slug) {
+  try {
+    await client.sql`
+    INSERT INTO Categories (
+      id,
+      name,
+      slug
+    )
+    VALUES (${id}, ${name}, ${slug});
+  `;
+    console.log(`Successfully inserted category ${name}`);
+    return id;
+  } catch (error) {
+    console.log(`Failed to insert category with id:${id}`, error);
+  }
+}
+
+async function insertProduct(
+  id,
+  brand_id,
+  name,
+  categ_id,
+  description,
+  ingredients
+) {
   try {
     await client.sql`
       INSERT INTO Products (
         id,
         brand_id,
         name,
+        categ_id,
         description,
         ingredients
       )
-      VALUES (${id}, ${brand_id}, ${name}, ${description}, ${ingredients});
+      VALUES (${id}, ${brand_id}, ${name}, ${categ_id}, ${description}, ${ingredients});
     `;
-    console.log(`Successfully inserted product ${name}`);
+    console.log(
+      `Successfully inserted product ${name} with category ${categ_id}`
+    );
   } catch (error) {
     console.error(error);
   }

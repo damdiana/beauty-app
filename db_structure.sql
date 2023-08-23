@@ -2,6 +2,7 @@ CREATE TABLE Products (
     id VARCHAR(10) PRIMARY KEY,
     brand_id VARCHAR(255),
     name VARCHAR(255),
+    categ_id INT,
     description TEXT,
     ingredients TEXT
 );
@@ -35,3 +36,9 @@ CREATE TABLE ProductReviews (
     rating NUMERIC CHECK (rating between 0 and 5 ) NOT NULL,
     UNIQUE(user_id, product_id)
 );
+
+CREATE TABLE Categories (
+    id INT PRIMARY KEY,
+    name VARCHAR(255),
+    slug VARCHAR(255)
+)
