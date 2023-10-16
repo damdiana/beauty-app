@@ -1,5 +1,5 @@
+import { response200, response500 } from "@/app/utils";
 import { getProductsReviewsByUser } from "@/model/ProductReviewsModel";
-import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
@@ -8,23 +8,9 @@ export async function GET(
   const { userId } = params;
   try {
     let reviews = await getProductsReviewsByUser(userId);
-    return NextResponse.json(
-      {
-        reviews,
-      },
-      {
-        status: 200,
-      }
-    );
+    return response200({ reviews });
   } catch (err) {
     console.error(err);
-    return NextResponse.json(
-      {
-        message: "Interal server error",
-      },
-      {
-        status: 500,
-      }
-    );
+    return response500("Interal server error");
   }
 }

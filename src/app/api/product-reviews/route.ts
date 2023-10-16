@@ -1,23 +1,16 @@
+import { response200, response400, response409 } from "@/app/utils";
 import { getProduct } from "@/model/ProductModel";
 import {
   getProductReviewByUser,
   insertReview,
 } from "@/model/ProductReviewsModel";
-import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   let body = undefined;
   try {
     body = await request.json();
   } catch (err) {
-    return NextResponse.json(
-      {
-        message: "Incorect format",
-      },
-      {
-        status: 400,
-      }
-    );
+    return response400("Incorect format");
   }
   if (
     typeof body.product_id !== "string" ||
@@ -26,38 +19,17 @@ export async function POST(request: Request) {
     typeof body.rating !== "number" ||
     typeof body.recommending !== "boolean"
   ) {
-    return NextResponse.json(
-      {
-        message: "Incorect format",
-      },
-      {
-        status: 400,
-      }
-    );
+    return response400("Incorect format");
   }
 
   if (body.rating > 5) {
-    return NextResponse.json(
-      {
-        message: "Rating maximum of 5",
-      },
-      {
-        status: 400,
-      }
-    );
+    return response400("Rating maximum of 5");
   }
 
   try {
     let product = await getProduct(body.product_id);
     if (product === undefined) {
-      return NextResponse.json(
-        {
-          message: "There is no product with this ID",
-        },
-        {
-          status: 400,
-        }
-      );
+      return response400("There is no product with this ID");
     }
     let review = await getProductReviewByUser(body.user_id, body.product_id);
     if (review === undefined) {
@@ -70,34 +42,15 @@ export async function POST(request: Request) {
         body.user_id,
         body.product_id
       );
-      return NextResponse.json(
-        {
-          message: "Review added in the database.",
-          product_review: insertedReview,
-        },
-        {
-          status: 200,
-        }
-      );
+      return response200({
+        message: "Review added in the database.",
+        product_review: insertedReview,
+      });
     } else {
-      return NextResponse.json(
-        {
-          message: "You can only add one review per product.",
-        },
-        {
-          status: 409,
-        }
-      );
+      return response409("You can only add one review per product.");
     }
   } catch (err) {
     console.error(err);
-    return NextResponse.json(
-      {
-        message: "Unable to add review",
-      },
-      {
-        status: 400,
-      }
-    );
+    return response400("Unable to add review");
   }
 }
