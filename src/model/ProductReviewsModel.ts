@@ -15,7 +15,9 @@ export type ProductReview = {
   recommending: boolean;
 };
 
-async function insertReview(productReview: ProductReview) {
+async function insertReview(
+  productReview: Omit<ProductReview, "id" | "added_at">
+) {
   const client = await db.connect();
   await client.sql`
     INSERT INTO ProductReviews (

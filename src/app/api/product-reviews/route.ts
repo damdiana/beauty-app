@@ -4,6 +4,15 @@ import {
   getProductReviewByUser,
   insertReview,
 } from "@/model/ProductReviewsModel";
+import { z } from "zod";
+
+const requestType = z.object({
+  product_id: z.string(),
+  review: z.string(),
+  title: z.string(),
+  rating: z.number().max(5).min(1),
+  recommending: z.boolean(),
+});
 
 export async function POST(request: Request) {
   let body = undefined;
@@ -12,35 +21,37 @@ export async function POST(request: Request) {
   } catch (err) {
     return response400("Incorect format");
   }
-  if (
-    typeof body.product_id !== "string" ||
-    typeof body.review !== "string" ||
-    typeof body.title !== "string" ||
-    typeof body.rating !== "number" ||
-    typeof body.recommending !== "boolean"
-  ) {
+  const results = requestType.safeParse(body);
+  if (!results.success!) {
     return response400("Incorect format");
   }
-
-  if (body.rating > 5) {
-    return response400("Rating maximum of 5");
-  }
+  const parsedBody = results.data;
 
   try {
-    let product = await getProduct(body.product_id);
+    let product = await getProduct(parsedBody.product_id);
     if (product === undefined) {
       return response400("There is no product with this ID");
     }
-    let review = await getProductReviewByUser(body.user_id, body.product_id);
-    if (review === undefined) {
+    const parsedBodyWithUserDetails: z.infer<typeof requestType> & {
+      user_id: string;
+      product_name: string;
+    } = {
+      ...parsedBody,
       // IMPORTANT: this is hardcoded because we don't yet have user management.
       // TO BE DELETED once we integrate authentication
-      body.user_id = "Diana13";
-      body.product_name = "test";
-      await insertReview(body);
+      user_id: "Diana13",
+      product_name: "test",
+    };
+
+    let review = await getProductReviewByUser(
+      parsedBodyWithUserDetails.user_id,
+      parsedBodyWithUserDetails.product_id
+    );
+    if (review === undefined) {
+      await insertReview(parsedBodyWithUserDetails);
       const insertedReview = await getProductReviewByUser(
-        body.user_id,
-        body.product_id
+        parsedBodyWithUserDetails.user_id,
+        parsedBodyWithUserDetails.product_id
       );
       return response200({
         message: "Review added in the database.",

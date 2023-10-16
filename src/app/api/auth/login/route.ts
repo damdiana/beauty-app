@@ -2,6 +2,12 @@ import validator from "email-validator";
 import bcrypt from "bcrypt";
 import { sanitizeUser, selectUser } from "@/model/UserModel";
 import { response200, response400, response401 } from "@/app/utils";
+import { z } from "zod";
+
+const requestType = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
 
 export async function POST(request: Request) {
   let body = undefined;
@@ -11,19 +17,20 @@ export async function POST(request: Request) {
     console.error(err);
     return response400("Body needs to be in JSON format");
   }
-  if (typeof body.email !== "string" || typeof body.password !== "string") {
+  const results = requestType.safeParse(body);
+  if (!results.success) {
     return response400("Email or password are not correct");
   }
-
-  if (!validator.validate(body.email)) {
+  const parsedBody = results.data;
+  if (!validator.validate(parsedBody.email)) {
     return response400("Email structure is incorrect");
   }
 
   try {
-    let user = await selectUser(body.email);
+    let user = await selectUser(parsedBody.email);
     if (user !== undefined) {
       let arePasswordsMatching = bcrypt.compareSync(
-        body.password,
+        parsedBody.password,
         user.password
       );
       if (arePasswordsMatching) {
