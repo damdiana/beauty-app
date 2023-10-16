@@ -1,6 +1,6 @@
+import { response200, response404, response500 } from "@/app/utils";
 import { getProduct } from "@/model/ProductModel";
 import { db } from "@vercel/postgres";
-import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
@@ -13,33 +13,14 @@ export async function GET(
   try {
     let product = await getProduct(params.productId);
     if (product === undefined) {
-      return NextResponse.json(
-        {
-          message: "Product not found.",
-        },
-        {
-          status: 404,
-        }
-      );
+      return response404("Product not found.");
     } else {
-      return NextResponse.json(
-        {
-          data: product,
-        },
-        {
-          status: 200,
-        }
-      );
+      return response200({
+        data: product,
+      });
     }
   } catch (err) {
     console.error(err);
-    return NextResponse.json(
-      {
-        message: "Interal server error",
-      },
-      {
-        status: 500,
-      }
-    );
+    return response500("Interal server error");
   }
 }

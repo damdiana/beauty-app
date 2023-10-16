@@ -1,6 +1,6 @@
+import { response200, response400, response500 } from "@/app/utils";
 import { getProduct } from "@/model/ProductModel";
 import { getProductReviews } from "@/model/ProductReviewsModel";
-import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
@@ -11,44 +11,16 @@ export async function GET(
   try {
     let product = await getProduct(productId);
     if (product === undefined) {
-      return NextResponse.json(
-        {
-          message: "There is no product with this ID",
-        },
-        {
-          status: 400,
-        }
-      );
+      return response400("There is no product with this ID");
     }
     let reviews = await getProductReviews(productId);
     if (reviews !== undefined) {
-      return NextResponse.json(
-        {
-          reviews,
-        },
-        {
-          status: 200,
-        }
-      );
+      return response200({ reviews });
     } else {
-      return NextResponse.json(
-        {
-          message: "There are no reviews",
-        },
-        {
-          status: 400,
-        }
-      );
+      return response400("There are no reviews");
     }
   } catch (err) {
     console.error(err);
-    return NextResponse.json(
-      {
-        message: "Interal server error",
-      },
-      {
-        status: 500,
-      }
-    );
+    return response500("Interal server error");
   }
 }
