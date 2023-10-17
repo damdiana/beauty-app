@@ -27,9 +27,6 @@ const ProductCard = ({ product }: Props) => {
           <span className="font-bold tracking-wide uppercase block mb-0.5">
             {product.brand_name}
           </span>
-          <p>
-            {product.category_name} {product.categ_id}
-          </p>
           <p className="font-bold">{product.name} </p>
         </Link>
         <Button variant="full" color="black" size="medium" className="mt-2">
