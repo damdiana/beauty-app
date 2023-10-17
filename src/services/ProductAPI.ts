@@ -1,3 +1,5 @@
+import { BASE_URL } from "@/Constants";
+
 export type Product = {
   id: string;
   brand_id: string;
@@ -18,7 +20,7 @@ async function fetchProducts(): Promise<
       message: string;
     }
 > {
-  let resp = await fetch(`http://${process.env.VERCEL_URL}/api/products`, {
+  let resp = await fetch(`${BASE_URL}/api/products`, {
     cache: "no-store",
   });
   if (resp.ok) {
@@ -46,12 +48,9 @@ async function fetchProduct(productId: string): Promise<
       message: string;
     }
 > {
-  let resp = await fetch(
-    `http://${process.env.VERCEL_URL}/api/products/${productId}`,
-    {
-      cache: "no-store",
-    }
-  );
+  let resp = await fetch(`${BASE_URL}/api/products/${productId}`, {
+    cache: "no-store",
+  });
   if (resp.ok) {
     let { data }: { data: Product } = await resp.json();
     return {

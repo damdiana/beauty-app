@@ -1,3 +1,4 @@
+import { BASE_URL } from "@/Constants";
 import { ProductReview } from "@/model/ProductReviewsModel";
 
 export type ProductReviewPostPayload = {
@@ -19,12 +20,9 @@ async function fetchProductReviews(product_Id: string): Promise<
       message: string;
     }
 > {
-  let resp = await fetch(
-    `http://${process.env.VERCEL_URL}/api/product-reviews/${product_Id}`,
-    {
-      cache: "no-store",
-    }
-  );
+  let resp = await fetch(`${BASE_URL}/api/product-reviews/${product_Id}`, {
+    cache: "no-store",
+  });
   if (resp.ok) {
     let { reviews }: { reviews: ProductReview[] } = await resp.json();
     return {
@@ -52,13 +50,10 @@ async function postProductReview(
       message: string;
     }
 > {
-  let resp = await fetch(
-    `http://${process.env.VERCEL_URL}/api/product-reviews`,
-    {
-      method: "POST",
-      body: JSON.stringify(product_review),
-    }
-  );
+  let resp = await fetch(`${BASE_URL}/api/product-reviews`, {
+    method: "POST",
+    body: JSON.stringify(product_review),
+  });
   if (resp.ok) {
     let { product_review }: { product_review: ProductReview } =
       await resp.json();
