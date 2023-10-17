@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Product } from "@/services/ProductAPI";
 import ProductImages from "./ProductImages/ProductImages";
+import Link from "next/link";
 
 function ProductScreen({ product }: { product: Product }) {
   const [selectedTabId, setSelectedTabId] = useState<
@@ -27,6 +28,9 @@ function ProductScreen({ product }: { product: Product }) {
             {product.brand_name}
           </p>
           <h1 className="font-bold text-xl"> {product.name} </h1>
+          <Link href={`/categories/${product.categ_id}`}>
+            Category: {product.category_name}
+          </Link>
           <a href="#description" className="mt-4 font-bold block">
             Find more
           </a>

@@ -7,6 +7,8 @@ export type Product = {
   brand_name: string;
   description: string;
   ingredients: string;
+  categ_id: string;
+  category_name: string;
   images: string[];
 };
 
