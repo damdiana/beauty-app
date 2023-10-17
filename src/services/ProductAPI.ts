@@ -68,4 +68,32 @@ async function fetchProduct(productId: string): Promise<
   }
 }
 
-export { fetchProducts, fetchProduct };
+async function fetchProductsByCategory(categoryId: string): Promise<
+  | {
+      ok: true;
+      products: Product[];
+    }
+  | {
+      ok: false;
+      message: string;
+    }
+> {
+  let resp = await fetch(`${BASE_URL}/api/categories/${categoryId}`, {
+    cache: "no-store",
+  });
+  if (resp.ok) {
+    let response = await resp.json();
+    return {
+      ok: true,
+      products: response.products,
+    };
+  } else {
+    let jsonResp = await resp.json();
+    return {
+      ok: false,
+      message: jsonResp.message ?? "Something went wrong. Please try again.",
+    };
+  }
+}
+
+export { fetchProducts, fetchProductsByCategory, fetchProduct };
