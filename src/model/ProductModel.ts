@@ -11,9 +11,12 @@ async function getProduct(productId: string): Promise<Product | undefined> {
       brands.name as "brand_name",
       products.name,
       products.description,
-      products.ingredients
+      products.ingredients,
+      products.categ_id,
+      categories.name as "category_name"
   FROM products
   INNER JOIN brands ON products.brand_id = brands.id
+  INNER JOIN categories ON products.categ_id = categories.id
   WHERE products.id = ${productId};
 `,
     client.sql`SELECT
