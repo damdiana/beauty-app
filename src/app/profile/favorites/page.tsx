@@ -6,7 +6,8 @@ function Favorites() {
     <div className="w-full h-full flex">
       <div className="m-2 p-1 border w-full flex flex-col h-3/5 ">
         <h2 className="text-lg m-2">
-          Your favorite products <FontAwesomeIcon icon={faHeart} />
+          Your favorite products{" "}
+          <FontAwesomeIcon icon={faHeart} className="h-5 w-5" />
         </h2>
       </div>
     </div>

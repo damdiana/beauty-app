@@ -14,3 +14,11 @@ body {
 body * {
   box-sizing: inherit;
 }
+
+/* FontAwesome icons are rendered as SVG. Without this rule,  there is a layout shift 
+when loading the page (eg: we have an element with the icon and text; the svg 
+doesn't sit alongside text but on a separate line).*/
+
+svg {
+  display: inline-block;
+}

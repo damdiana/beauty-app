@@ -22,6 +22,7 @@ const RatingButtons = ({
         >
           <FontAwesomeIcon
             icon={rating >= index + 1 ? faStar : faStarOutline}
+            className="h-5 w-5"
           />
         </button>
       ))}

@@ -29,7 +29,7 @@ const Login = () => {
       />
       <p className="font-bold mb-4">Welcome back!</p>
       <label htmlFor="email" className="my-4">
-        <FontAwesomeIcon icon={faUser} className="pr-2" />
+        <FontAwesomeIcon icon={faUser} className="mr-2 h-5 w-5" />
         Your email
       </label>
       <Input
@@ -41,7 +41,7 @@ const Login = () => {
         id="email"
       />
       <label htmlFor="password" className="my-4">
-        <FontAwesomeIcon icon={faLock} className="pr-2" />
+        <FontAwesomeIcon icon={faLock} className="mr-2 h-5 w-5" />
         Password
       </label>
       <Input

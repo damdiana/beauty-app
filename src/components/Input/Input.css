@@ -4,13 +4,28 @@
 }
 
 .small {
-    font-size: 12px;
+    font-size: 12px; 
+}
+
+svg.small{
+    height: 16px;
+    width: 16px;
 }
 
 .medium {
     font-size: 14px;
 }
 
+svg.medium {
+    height: 16px;
+    width: 16px;
+}
+
 .large {
     font-size: 16px;
+}
+
+svg.large {
+    height: 18px;
+    width: 18px;
 }

@@ -38,7 +38,7 @@ const ProductReviewsSection = ({
       {productReviews.length === 0 && (
         <div className="flex items-center">
           <p className="font-bold mx-2"> No reviews for this product yet </p>
-          <FontAwesomeIcon icon={faFaceFrownOpen} />
+          <FontAwesomeIcon icon={faFaceFrownOpen} className="h-5 w-5" />
         </div>
       )}
       {productReviews.map((review) => (

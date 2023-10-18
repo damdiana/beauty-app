@@ -24,11 +24,11 @@ const ViewRating = ({ review }: { review: ProductReview }) => {
           <p className="font-bold mr-1"> Recomanding this product? </p>
           {review.recommending === true ? (
             <p className="ml-2">
-              Yes <FontAwesomeIcon icon={faCheck} />
+              Yes <FontAwesomeIcon icon={faCheck} className="h-5 w-5" />
             </p>
           ) : (
             <p className="ml-2">
-              No <FontAwesomeIcon icon={faXmark} />
+              No <FontAwesomeIcon icon={faXmark} className="h-5 w-5" />
             </p>
           )}
         </div>

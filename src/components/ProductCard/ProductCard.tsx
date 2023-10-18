@@ -30,7 +30,8 @@ const ProductCard = ({ product }: Props) => {
           <p className="font-bold">{product.name} </p>
         </Link>
         <Button variant="full" color="black" size="medium" className="mt-2">
-          Add to favorites <FontAwesomeIcon icon={faHeart} />
+          <span className="mr-1"> Add to favorites </span>
+          <FontAwesomeIcon icon={faHeart} className="h-5 w-5" />
         </Button>
       </div>
     </section>

@@ -75,7 +75,7 @@ export default async function Page({
       ) : (
         <div className="flex items-center">
           <p className="font-bold mx-2"> Unable to show the reviews </p>
-          <FontAwesomeIcon icon={faFaceFrownOpen} />
+          <FontAwesomeIcon icon={faFaceFrownOpen} className="h-5 w-5" />
         </div>
       )}
     </div>
