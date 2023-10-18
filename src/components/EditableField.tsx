@@ -48,7 +48,7 @@ const EditableField = ({ label, initialValue, type, onSave }: Props) => {
                   setValue("");
                 }}
               >
-                <FontAwesomeIcon icon={faX} className="pr-3" />
+                <FontAwesomeIcon icon={faX} className="mr-3 h-5 w-5" />
               </Button>
             </div>
             <div className="flex flex-col">

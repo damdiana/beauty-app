@@ -13,7 +13,7 @@ const Details = ({ question, answer }: Props) => {
       <details className="border border-black p-2 m-2">
         <summary className="flex justify-between text-base">
           {question}
-          <FontAwesomeIcon icon={faCaretDown} className="faIcon pr-1" />
+          <FontAwesomeIcon icon={faCaretDown} className="faIcon mr-1 h-5 w-5" />
         </summary>
         <div className="p-1">{answer} </div>
       </details>

@@ -28,13 +28,16 @@ const Header = ({ nav }: Props) => {
           size="small"
           className="menuButton"
         >
-          <FontAwesomeIcon icon={showNav ? faXmark : faBars} />
+          <FontAwesomeIcon
+            icon={showNav ? faXmark : faBars}
+            className="h-5 w-5"
+          />
         </Button>
         <NextLink href="/">
           <img src="/assets/logo.png" alt="logo" width="80" className="logo" />
         </NextLink>
         <NextLink href="/login">
-          <FontAwesomeIcon icon={faUser} className="pr-2" />
+          <FontAwesomeIcon icon={faUser} className="mr-2 h-5 w-5" />
           Account
         </NextLink>
       </div>

@@ -37,7 +37,8 @@ const Register = () => {
       <p className="m-2 font-bold">You don't have an account? </p>
       <p className="font-bold mb-4"> Let's change that </p>
       <label htmlFor="firstName" className="mt-4 mb-2">
-        <FontAwesomeIcon icon={faFileText} className="pr-2" /> First Name
+        <FontAwesomeIcon icon={faFileText} className="mr-2 h-5 w-5" /> First
+        Name
       </label>
       <Input
         className="w-full"
@@ -49,7 +50,7 @@ const Register = () => {
       />
 
       <label htmlFor="lastName" className="my-4">
-        <FontAwesomeIcon icon={faFileText} className="pr-2" /> Last Name
+        <FontAwesomeIcon icon={faFileText} className="mr-2 h-5 w-5" /> Last Name
       </label>
       <Input
         className="w-full"
@@ -60,7 +61,7 @@ const Register = () => {
         id="lastName"
       />
       <label htmlFor="email" className="my-4">
-        <FontAwesomeIcon icon={faUser} className="pr-2" />
+        <FontAwesomeIcon icon={faUser} className="mr-2 h-5 w-5" />
         Your email address
       </label>
       <Input
@@ -73,7 +74,7 @@ const Register = () => {
       />
 
       <label htmlFor="email" className="my-4">
-        <FontAwesomeIcon icon={faUser} className="pr-2" />
+        <FontAwesomeIcon icon={faUser} className="mr-2 h-5 w-5" />
         Confirm your email address
       </label>
       <Input
@@ -86,7 +87,7 @@ const Register = () => {
       />
 
       <label htmlFor="password" className="my-4">
-        <FontAwesomeIcon icon={faLock} className="pr-2" />
+        <FontAwesomeIcon icon={faLock} className="mr-2 h-5 w-5" />
         Password
       </label>
       <Input
@@ -99,7 +100,7 @@ const Register = () => {
       />
 
       <label htmlFor="password" className="my-4">
-        <FontAwesomeIcon icon={faLock} className="pr-2" />
+        <FontAwesomeIcon icon={faLock} className="mr-2 h-5 w-5" />
         Confirm your password
       </label>
       <Input

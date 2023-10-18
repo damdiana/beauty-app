@@ -22,7 +22,7 @@ const ProfileFormNavigationButtons = ({
           onClick={onPrevious}
           className="rounded-md"
         >
-          <FontAwesomeIcon icon={faAngleDoubleLeft} className="pr-1" />
+          <FontAwesomeIcon icon={faAngleDoubleLeft} className="mr-1 h-5 w-5" />
           Previous
         </Button>
       )}
@@ -34,7 +34,7 @@ const ProfileFormNavigationButtons = ({
           size="medium"
           className="rounded-md"
         >
-          Next <FontAwesomeIcon icon={faAngleDoubleRight} />
+          Next <FontAwesomeIcon icon={faAngleDoubleRight} className="h-5 w-5" />
         </Button>
       )}
     </div>

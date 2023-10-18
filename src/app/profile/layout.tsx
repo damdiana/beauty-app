@@ -53,7 +53,7 @@ export default function ProfileLayout({
                 currentRoute === "/profile/settings" ? activeClasses : ""
               }`}
             >
-              <FontAwesomeIcon icon={faHouse} className="pr-3" />
+              <FontAwesomeIcon icon={faHouse} className="mr-3 h-5 w-5" />
               Account Details
             </Link>
             <Link
@@ -62,7 +62,8 @@ export default function ProfileLayout({
                 currentRoute === "/profile" ? activeClasses : ""
               }`}
             >
-              <FontAwesomeIcon icon={faUser} className="pr-2" /> My Profile
+              <FontAwesomeIcon icon={faUser} className="mr-3 h-5 w-5" /> My
+              Profile
             </Link>
             <Link
               href="/profile/editprofile"
@@ -70,7 +71,8 @@ export default function ProfileLayout({
                 currentRoute === "/profile/editprofile" ? activeClasses : ""
               }`}
             >
-              <FontAwesomeIcon icon={faUser} className="pr-2" /> Edit Profile
+              <FontAwesomeIcon icon={faUser} className="mr-3 h-5 w-5" /> Edit
+              Profile
             </Link>
             <Link
               href="/profile/favorites"
@@ -78,7 +80,8 @@ export default function ProfileLayout({
                 currentRoute === "/profile/favorites" ? activeClasses : ""
               }`}
             >
-              <FontAwesomeIcon icon={faStar} className="pr-1" /> My favorites
+              <FontAwesomeIcon icon={faStar} className="mr-3 h-5 w-5" /> My
+              favorites
             </Link>
             <Link
               href="/profile/help"
@@ -86,11 +89,12 @@ export default function ProfileLayout({
                 currentRoute === "/profile/help" ? activeClasses : ""
               }`}
             >
-              <FontAwesomeIcon icon={faQuestion} className="pl-1" />
+              <FontAwesomeIcon icon={faQuestion} className="ml-3 h-5 w-5" />
               <span className="pl-2"> Help </span>
             </Link>
             <Button variant="text" color="black" size="medium">
-              <FontAwesomeIcon icon={faRightFromBracket} /> Log Out
+              <FontAwesomeIcon icon={faRightFromBracket} className="h-5 w-5" />
+              Log Out
             </Button>
           </div>
           <div className="w-full">{children}</div>
