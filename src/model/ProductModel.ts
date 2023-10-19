@@ -42,24 +42,28 @@ async function getProduct(productId: string): Promise<Product | undefined> {
   return productRows[0] as Product;
 }
 
-async function getProductsByCategory(categoryId: string): Promise<Product[]> {
+async function getProducts(categoryId?: string): Promise<Product[]> {
+  let query = `SELECT
+    products.id,
+    products.brand_id,
+    brands.name as "brand_name",
+    products.name,
+    products.description,
+    products.ingredients,
+    products.categ_id,
+    categories.name as "category_name",
+    productimages.image
+  FROM products
+  INNER JOIN brands ON products.brand_id = brands.id
+  INNER JOIN categories ON products.categ_id = categories.id
+  INNER JOIN productimages ON products.id = productimages.product_id`;
   const client = await db.connect();
-  const products = await client.sql` 
-  SELECT
-  products.id,
-  products.brand_id,
-  brands.name as "brand_name",
-  products.name,
-  products.description,
-  products.ingredients,
-  products.categ_id,
-  categories.name as "category_name",
-  productimages.image
-FROM products
-INNER JOIN brands ON products.brand_id = brands.id
-INNER JOIN categories ON products.categ_id = categories.id
-INNER JOIN productimages ON products.id = productimages.product_id
-WHERE categ_id = ${categoryId}`;
+  let params = [];
+  if (categoryId !== undefined) {
+    query += ` WHERE categ_id=$1`;
+    params.push(categoryId);
+  }
+  const products = await client.query(query, params);
 
   const productRows = products.rows as (Omit<Product, "images"> & {
     image: string;
@@ -82,4 +86,4 @@ WHERE categ_id = ${categoryId}`;
   return productsArray as Product[];
 }
 
-export { getProduct, getProductsByCategory };
+export { getProduct, getProducts };

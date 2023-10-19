@@ -5,7 +5,7 @@ import {
   response500,
 } from "@/app/utils";
 import { getCategory } from "@/model/CategoryModel";
-import { getProductsByCategory } from "@/model/ProductModel";
+import { getProducts } from "@/model/ProductModel";
 
 export async function GET(
   request: Request,
@@ -21,7 +21,7 @@ export async function GET(
       return response404("Category not found");
     }
 
-    let products = await getProductsByCategory(params.categoryId);
+    let products = await getProducts(params.categoryId);
 
     return response200({ products });
   } catch (err) {
