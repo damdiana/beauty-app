@@ -3,7 +3,7 @@ import CategoryPage from "@/components/CategoryPage/CategoryPage";
 import Header from "@/components/Header/Header";
 import ProductCard from "@/components/ProductCard/ProductCard";
 import { getCategory } from "@/model/CategoryModel";
-import { getProductsByCategory } from "@/model/ProductModel";
+import { getProducts } from "@/model/ProductModel";
 import { Product } from "@/services/ProductAPI";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -36,7 +36,7 @@ export default async function Page({
   }
   let products: Product[];
   try {
-    products = await getProductsByCategory(params.categoryId);
+    products = await getProducts(params.categoryId);
     if (products.length === 0) {
       return (
         <CategoryPage>

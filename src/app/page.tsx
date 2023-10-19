@@ -1,12 +1,41 @@
+import CategoryPage from "@/components/CategoryPage/CategoryPage";
 import Header from "@/components/Header/Header";
 import ProductCard from "@/components/ProductCard/ProductCard";
-import { fetchProducts } from "@/services/ProductAPI";
-
+import { getProducts } from "@/model/ProductModel";
 export default async function Home() {
-  let resp = await fetchProducts();
-
+  let products;
+  try {
+    products = await getProducts();
+  } catch (err) {
+    console.log("Failed to select products", err);
+    return (
+      <>
+        <Header
+          nav={[
+            {
+              href: "https://github.com/damdiana?tab=repositories",
+              title: "Body",
+            },
+            {
+              href: "https://github.com/damdiana?tab=repositories",
+              title: "Face",
+            },
+            {
+              href: "https://github.com/damdiana?tab=repositories",
+              title: "New",
+            },
+            {
+              href: "https://github.com/damdiana?tab=repositories",
+              title: "Trending",
+            },
+          ]}
+        />
+        <p className="m-2 text-center"> Failed to list products </p>
+      </>
+    );
+  }
   return (
-    <>
+    <div>
       <Header
         nav={[
           {
@@ -27,17 +56,17 @@ export default async function Home() {
           },
         ]}
       />
-      <div className="grid card-grid-cols-3   mt-4 gap-4">
-        {resp.ok === true ? (
+      <div className="grid card-grid-cols-3 mt-4 gap-4">
+        {products.length > 0 ? (
           <>
-            {resp.products.map((product) => {
+            {products.map((product) => {
               return <ProductCard key={product.id} product={product} />;
             })}
           </>
         ) : (
-          <p className="text-red-500"> {resp.message} </p>
+          <p> No Products Yet </p>
         )}
       </div>
-    </>
+    </div>
   );
 }
