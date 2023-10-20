@@ -28,6 +28,7 @@ const ProductReviewsSection = ({
     if (resp.ok) {
       setProductReviews([...productReviews, resp.productReview]);
     }
+    return resp;
   }
 
   return (

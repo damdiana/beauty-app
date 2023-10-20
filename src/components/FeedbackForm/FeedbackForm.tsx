@@ -14,7 +14,16 @@ const FeedbackForm = ({
   onAddReview,
 }: {
   productId: string;
-  onAddReview: (review: ProductReviewPostPayload) => Promise<void>;
+  onAddReview: (review: ProductReviewPostPayload) => Promise<
+    | {
+        ok: true;
+        productReview: ProductReview;
+      }
+    | {
+        ok: false;
+        message: string;
+      }
+  >;
 }) => {
   const [rating, setRating] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,14 +40,18 @@ const FeedbackForm = ({
     setIsLoading(true);
 
     try {
-      await onAddReview({
+      const review: ProductReviewPostPayload = {
         review: event.currentTarget.review.value as string,
         title: event.currentTarget.reviewTitle.value as string,
         recommending: event.currentTarget.recommending.checked as boolean,
         product_id: productId,
         added_at: formatDateTime(new Date()),
         rating: rating,
-      });
+      };
+      let resp = await onAddReview(review);
+      if (resp.ok === false) {
+        setFormError(resp.message);
+      }
     } catch (err) {
       setFormError("Failed to add review");
     } finally {

@@ -50,22 +50,29 @@ async function postProductReview(
       message: string;
     }
 > {
-  let resp = await fetch(`${BASE_URL}/api/product-reviews`, {
-    method: "POST",
-    body: JSON.stringify(product_review),
-  });
-  if (resp.ok) {
-    let { product_review }: { product_review: ProductReview } =
-      await resp.json();
-    return {
-      ok: true,
-      productReview: product_review,
-    };
-  } else {
-    let jsonResp = await resp.json();
+  try {
+    let resp = await fetch(`${BASE_URL}/api/product-reviews`, {
+      method: "POST",
+      body: JSON.stringify(product_review),
+    });
+    if (resp.ok) {
+      let { product_review }: { product_review: ProductReview } =
+        await resp.json();
+      return {
+        ok: true,
+        productReview: product_review,
+      };
+    } else {
+      let jsonResp = await resp.json();
+      return {
+        ok: false,
+        message: jsonResp.message ?? "Something went wrong. Please try again.",
+      };
+    }
+  } catch (err) {
     return {
       ok: false,
-      message: jsonResp.message ?? "Something went wrong. Please try again.",
+      message: "Something went wrong. Please try again.",
     };
   }
 }
