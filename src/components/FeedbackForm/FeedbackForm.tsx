@@ -22,6 +22,8 @@ const FeedbackForm = ({
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
+    setFormError("");
+
     if (rating === 0) {
       return setFormError("Rating Mandatory!");
     }
