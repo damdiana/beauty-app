@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   }
   const results = requestType.safeParse(body);
   if (!results.success) {
-    return response400("Email or password are not correct");
+    return response400("Body needs to be in JSON format");
   }
   const parsedBody = results.data;
 
