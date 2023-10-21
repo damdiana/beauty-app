@@ -23,6 +23,7 @@
     "bcrypt": "^5.1.0",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
+    "jose": "^4.15.4",
     "next": "13.4.4",
     "postcss": "8.4.23",
     "react": "18.2.0",
