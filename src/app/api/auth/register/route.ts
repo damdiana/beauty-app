@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import validator from "email-validator";
 import bcrypt from "bcrypt";
 import {
   insertUser,
@@ -28,10 +27,6 @@ export async function POST(request: Request) {
     return response400("Email or password are not correct");
   }
   const parsedBody = results.data;
-
-  if (!validator.validate(parsedBody.email)) {
-    return response400("Email structure is incorrect");
-  }
 
   try {
     let isAlreadyRegistered = await userAlreadyExists(parsedBody.email);
