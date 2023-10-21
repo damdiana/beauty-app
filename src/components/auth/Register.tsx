@@ -15,8 +15,7 @@ const Register = () => {
   const sendRegistration: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     const formData = {
-      firstName: e.currentTarget.firstName.value,
-      lastName: e.currentTarget.lastName.value,
+      fullName: e.currentTarget.fullName.value,
       email: e.currentTarget.email.value,
       password: e.currentTarget.password.value,
     };
@@ -36,29 +35,16 @@ const Register = () => {
       />
       <p className="m-2 font-bold">You don't have an account? </p>
       <p className="font-bold mb-4"> Let's change that </p>
-      <label htmlFor="firstName" className="mt-4 mb-2">
-        <FontAwesomeIcon icon={faFileText} className="mr-2 h-5 w-5" /> First
-        Name
+      <label htmlFor="fullName" className="mt-4 mb-2">
+        <FontAwesomeIcon icon={faFileText} className="mr-2 h-5 w-5" /> Full Name
       </label>
       <Input
         className="w-full"
-        type="firstName"
+        type="fullName"
         required
         size="small"
-        name="firstName"
-        id="firstName"
-      />
-
-      <label htmlFor="lastName" className="my-4">
-        <FontAwesomeIcon icon={faFileText} className="mr-2 h-5 w-5" /> Last Name
-      </label>
-      <Input
-        className="w-full"
-        type="lastName"
-        required
-        size="small"
-        name="lastName"
-        id="lastName"
+        name="fullName"
+        id="fullName"
       />
       <label htmlFor="email" className="my-4">
         <FontAwesomeIcon icon={faUser} className="mr-2 h-5 w-5" />
