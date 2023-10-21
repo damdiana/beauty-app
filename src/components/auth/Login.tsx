@@ -5,15 +5,36 @@ import Button from "../Button-Link/Button/Button";
 import Input from "../Input/Input";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import Link from "../Button-Link/Link/Link";
+import { loginUser } from "@/services/AuthAPI";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
-  const sendForm: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [formError, setFormError] = useState("");
+
+  const router = useRouter();
+
+  const sendForm: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    setFormError("");
     const formData = {
       email: e.currentTarget.email.value,
       password: e.currentTarget.password.value,
     };
-    console.log(formData);
+    setIsLoading(true);
+    try {
+      let resp = await loginUser(formData.email, formData.password);
+      if (resp.ok === true) {
+        router.push("/");
+      } else {
+        setFormError(resp.message);
+      }
+    } catch (err) {
+      setFormError("Failed to login");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -55,12 +76,14 @@ const Login = () => {
       <Button
         type="submit"
         variant="full"
-        color="black"
+        color={`${isLoading === false ? "black" : "beige"}`}
         size="medium"
-        className="mt-6 rounded-2xl w-full"
+        className="mt-6 rounded-2xl w-full "
+        disabled={isLoading}
       >
-        Login to your account
+        {isLoading === true ? "Loading..." : "Login to your account"}
       </Button>
+      <p className="text-red-500 font-bold">{formError} </p>
     </form>
   );
 };
