@@ -8,6 +8,9 @@ import {
 } from "@/model/UserModel";
 import { response400, response409, response500 } from "@/app/utils";
 import { z } from "zod";
+import { encodeJWT } from "@/services/server/JWTService";
+import { AUTH_COOKIE_CONFIG } from "@/Constants";
+import { cookies } from "next/headers";
 
 const SALT_ROUNDS = +(process.env.SALT_ROUNDS ?? "5");
 const requestType = z.object({
@@ -16,6 +19,7 @@ const requestType = z.object({
 });
 
 export async function POST(request: Request) {
+  let cookiesStore = cookies();
   let body = undefined;
   try {
     body = await request.json();
@@ -38,6 +42,8 @@ export async function POST(request: Request) {
     await insertUser(parsedBody.email, hash);
     let user = await selectUser(parsedBody.email);
     if (user !== undefined) {
+      let jwt = await encodeJWT(user.id);
+      cookiesStore.set({ ...AUTH_COOKIE_CONFIG, value: jwt });
       return NextResponse.json(sanitizeUser(user));
     }
   } catch (err) {
