@@ -1,4 +1,3 @@
-import validator from "email-validator";
 import bcrypt from "bcrypt";
 import { sanitizeUser, selectUser } from "@/model/UserModel";
 import { response200, response400, response401 } from "@/app/utils";
@@ -22,9 +21,6 @@ export async function POST(request: Request) {
     return response400("Email or password are not correct");
   }
   const parsedBody = results.data;
-  if (!validator.validate(parsedBody.email)) {
-    return response400("Email structure is incorrect");
-  }
 
   try {
     let user = await selectUser(parsedBody.email);
