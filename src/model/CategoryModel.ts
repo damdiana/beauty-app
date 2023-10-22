@@ -1,13 +1,16 @@
+import { getPostgresClient } from "@/services/server/database";
 import { Category } from "@/services/types";
-import { db } from "@vercel/postgres";
 
 async function getCategory(categoryId: string): Promise<Category | undefined> {
-  const client = await db.connect();
-  const categoryResult = await client.sql`
+  const client = await getPostgresClient();
+  const categoryResult = await client.query(
+    `
     SELECT *
     FROM categories
-    WHERE id = ${categoryId}
-  `;
+    WHERE id = $1
+  `,
+    [categoryId]
+  );
 
   const categoryRow = categoryResult.rows[0];
 

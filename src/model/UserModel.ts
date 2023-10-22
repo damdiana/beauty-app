@@ -1,4 +1,4 @@
-import { db } from "@vercel/postgres";
+import { getPostgresClient } from "@/services/server/database";
 
 type User = {
   email: string;
@@ -7,8 +7,10 @@ type User = {
 };
 
 async function selectUser(email: string): Promise<User | undefined> {
-  const client = await db.connect();
-  let response = await client.sql`SELECT * FROM Users WHERE email = ${email}`;
+  const client = await getPostgresClient();
+  let response = await client.query(`SELECT * FROM Users WHERE email = $1`, [
+    email,
+  ]);
 
   if (response.rowCount === 0) {
     return undefined;
@@ -22,19 +24,23 @@ async function selectUser(email: string): Promise<User | undefined> {
 }
 
 async function insertUser(email: string, password: string) {
-  const client = await db.connect();
-  await client.sql`
-          INSERT INTO Users (
-            email,
-            password
-          )
-          VALUES (${email}, ${password});
-        `;
+  const client = await getPostgresClient();
+  await client.query(
+    `
+    INSERT INTO Users (
+      email,
+      password
+    )
+    VALUES ($1, $2)`,
+    [email, password]
+  );
 }
 
 async function userAlreadyExists(email: string): Promise<boolean> {
-  const client = await db.connect();
-  let response = await client.sql`SELECT * FROM Users WHERE email = ${email}`;
+  const client = await getPostgresClient();
+  let response = await client.query(`SELECT * FROM Users WHERE email = $1`, [
+    email,
+  ]);
   if (response.rowCount === 0) {
     return false;
   }

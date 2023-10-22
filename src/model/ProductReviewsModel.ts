@@ -1,4 +1,4 @@
-import { db } from "@vercel/postgres";
+import { getPostgresClient } from "@/services/server/database";
 
 export type ProductReview = {
   id: string;
@@ -18,23 +18,37 @@ export type ProductReview = {
 async function insertReview(
   productReview: Omit<ProductReview, "id" | "added_at">
 ) {
-  const client = await db.connect();
-  await client.sql`
+  const client = await getPostgresClient();
+  await client.query(
+    `
     INSERT INTO ProductReviews (
         user_id, product_id, product_name, title, review, rating, recommending 
       )
-      VALUES (${productReview.user_id}, ${productReview.product_id}, ${productReview.product_name}, ${productReview.title}, ${productReview.review},${productReview.rating}, ${productReview.recommending})`;
+      VALUES ($1, $2, $3, $4, $5,$6, $7)`,
+    [
+      productReview.user_id,
+      productReview.product_id,
+      productReview.product_name,
+      productReview.title,
+      productReview.review,
+      productReview.rating,
+      productReview.recommending,
+    ]
+  );
 }
 
 async function getProductReviewByUser(
   user_id: string,
   product_id: string
 ): Promise<ProductReview | undefined> {
-  const client = await db.connect();
-  let response = await client.sql`
+  const client = await getPostgresClient();
+  let response = await client.query(
+    `
     SELECT *
     FROM ProductReviews
-    WHERE user_id = ${user_id} AND product_id = ${product_id}`;
+    WHERE user_id = $1 AND product_id = $2`,
+    [user_id, product_id]
+  );
 
   if (response.rows.length === 0) {
     return undefined;
@@ -45,21 +59,27 @@ async function getProductReviewByUser(
 async function getProductsReviewsByUser(
   user_id: string
 ): Promise<ProductReview[]> {
-  const client = await db.connect();
-  let response = await client.sql`
+  const client = await getPostgresClient();
+  let response = await client.query(
+    `
       SELECT *
       FROM ProductReviews
-      WHERE user_id = ${user_id}`;
+      WHERE user_id = $1`,
+    [user_id]
+  );
   return response.rows as ProductReview[];
 }
 
 async function getProductReviews(product_id: string): Promise<ProductReview[]> {
-  const client = await db.connect();
-  let response = await client.sql`
+  const client = await getPostgresClient();
+  let response = await client.query(
+    `
     SELECT  * 
     FROM ProductReviews
     WHERE
-        product_id = ${product_id}`;
+        product_id = $1`,
+    [product_id]
+  );
   return response.rows as ProductReview[];
 }
 

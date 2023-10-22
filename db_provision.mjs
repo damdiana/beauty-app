@@ -1,13 +1,16 @@
 // This file creates the database tables and inserts the products along with
 // all the details, such as brand name and product images.
 
-import { db } from "@vercel/postgres";
+import pg from "pg";
 import * as dotenv from "dotenv";
 dotenv.config({
   path: ".env.local",
 });
 
-const client = await db.connect();
+const client = new pg.Client({
+  connectionString: process.env.POSTGRES_URL,
+});
+await client.connect();
 
 const categoryIds = await fetchAndInsertCategories();
 categoryIds.forEach((categId) => {
@@ -107,14 +110,17 @@ function fromSephoraObject(sephoraProduct) {
 
 async function insertCategory(id, name, slug) {
   try {
-    await client.sql`
+    await client.query(
+      `
     INSERT INTO Categories (
       id,
       name,
       slug
     )
-    VALUES (${id}, ${name}, ${slug});
-  `;
+    VALUES ($1, $2, $3);
+  `,
+      [id, name, slug]
+    );
     console.log(`Successfully inserted category ${name}`);
     return id;
   } catch (error) {
@@ -131,17 +137,19 @@ async function insertProduct(
   ingredients
 ) {
   try {
-    await client.sql`
-      INSERT INTO Products (
-        id,
-        brand_id,
-        name,
-        categ_id,
-        description,
-        ingredients
-      )
-      VALUES (${id}, ${brand_id}, ${name}, ${categ_id}, ${description}, ${ingredients});
-    `;
+    await client.query(
+      ` INSERT INTO Products (
+      id,
+      brand_id,
+      name,
+      categ_id,
+      description,
+      ingredients
+    )
+    VALUES ($1, $2, $3, $4, $5, $6);
+  `,
+      [id, brand_id, name, categ_id, description, ingredients]
+    );
     console.log(
       `Successfully inserted product ${name} with category ${categ_id}`
     );
@@ -152,14 +160,17 @@ async function insertProduct(
 
 async function insertImage(product_id, image) {
   try {
-    await client.sql`
+    await client.query(
+      `
       INSERT INTO ProductImages (
         product_id,
         image
         
       )
-      VALUES (${product_id}, ${image});
-    `;
+      VALUES ($1, $2);
+    `,
+      [product_id, image]
+    );
     console.log(`Successfuly inserted ${product_id} image`);
   } catch (error) {
     console.error(error);
@@ -168,64 +179,17 @@ async function insertImage(product_id, image) {
 
 async function insertBrand(id, name) {
   try {
-    await client.sql`
+    await client.query(
+      `
       INSERT INTO Brands (
         id,
         name
       )
-      VALUES (${id}, ${name});
-    `;
+      VALUES ($1, $2);
+    `,
+      [id, name]
+    );
     console.log(`Successfully inserted brand ${name}`);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function createProductsTable() {
-  const client = await db.connect();
-
-  try {
-    await client.sql`
-      CREATE TABLE Products (
-        id VARCHAR(10) PRIMARY KEY,
-        brand_id VARCHAR(255),
-        name VARCHAR(255),
-        description TEXT,
-        ingredients TEXT
-      );`;
-    console.log("Succes!");
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function createProductImagesTable() {
-  const client = await db.connect();
-
-  try {
-    await client.sql`
-      CREATE TABLE ProductImages (
-        id SERIAL PRIMARY KEY,
-        product_id VARCHAR(10),
-        image VARCHAR(255)
-       
-      );`;
-    console.log("Succes!");
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function createBrandsTabel() {
-  const client = await db.connect();
-
-  try {
-    await client.sql`
-      CREATE TABLE Brands (
-        id VARCHAR(10) PRIMARY KEY,
-        name VARCHAR(255)
-      );`;
-    console.log("Succes!");
   } catch (error) {
     console.error(error);
   }

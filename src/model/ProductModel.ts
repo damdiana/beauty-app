@@ -1,11 +1,12 @@
 import { Product } from "@/services/ProductAPI";
-import { db } from "@vercel/postgres";
+import { getPostgresClient } from "@/services/server/database";
 
 async function getProduct(productId: string): Promise<Product | undefined> {
-  const client = await db.connect();
+  const client = await getPostgresClient();
 
   const [productResponse, imagesResponse] = await Promise.all([
-    client.sql`SELECT
+    client.query(
+      `SELECT
       products.id,
       products.brand_id,
       brands.name as "brand_name",
@@ -17,15 +18,20 @@ async function getProduct(productId: string): Promise<Product | undefined> {
   FROM products
   INNER JOIN brands ON products.brand_id = brands.id
   INNER JOIN categories ON products.categ_id = categories.id
-  WHERE products.id = ${productId};
+  WHERE products.id = $1;
 `,
-    client.sql`SELECT
+      [productId]
+    ),
+    client.query(
+      `SELECT
 	    products.id,
 	    products.name,
 	    productimages.image
     FROM products
     INNER JOIN productimages ON products.id = productimages.product_id
-    WHERE products.id = ${productId};`,
+    WHERE products.id = $1;`,
+      [productId]
+    ),
   ]);
 
   const productRows = productResponse.rows;
@@ -57,7 +63,7 @@ async function getProducts(categoryId?: string): Promise<Product[]> {
   INNER JOIN brands ON products.brand_id = brands.id
   INNER JOIN categories ON products.categ_id = categories.id
   INNER JOIN productimages ON products.id = productimages.product_id`;
-  const client = await db.connect();
+  const client = await getPostgresClient();
   let params = [];
   if (categoryId !== undefined) {
     query += ` WHERE categ_id=$1`;
