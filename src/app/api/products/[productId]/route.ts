@@ -1,6 +1,5 @@
 import { response200, response404, response500 } from "@/app/utils";
 import { getProduct } from "@/model/ProductModel";
-import { db } from "@vercel/postgres";
 
 export async function GET(
   request: Request,
