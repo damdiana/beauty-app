@@ -4,7 +4,7 @@
 import { db } from "@vercel/postgres";
 import * as dotenv from "dotenv";
 dotenv.config({
-  path: ".env.development.local",
+  path: ".env.local",
 });
 
 const client = await db.connect();
