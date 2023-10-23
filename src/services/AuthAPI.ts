@@ -32,4 +32,24 @@ async function loginUser(
   }
 }
 
-export { loginUser };
+async function logoutUser(): Promise<{
+  ok: boolean;
+  message: string;
+}> {
+  let resp = await fetch(`${BASE_URL}/api/auth/logout`, {
+    method: "POST",
+  });
+  if (resp.ok) {
+    let jsonResp = await resp.json();
+    return {
+      ok: true,
+      message: jsonResp.message,
+    };
+  } else {
+    return {
+      ok: false,
+      message: "Something went wrong. Please try again.",
+    };
+  }
+}
+export { loginUser, logoutUser };
