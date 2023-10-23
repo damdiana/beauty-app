@@ -21,7 +21,8 @@ CREATE TABLE Brands (
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(256) NOT NULL
+    password VARCHAR(256) NOT NULL,
+    full_name VARCHAR(256) NOT NULL
 );
 
 CREATE TABLE ProductReviews (
