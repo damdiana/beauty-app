@@ -1,6 +1,7 @@
 import Header from "@/components/Header/Header";
 import ProfileSideNav from "@/components/ProfileSideNav/ProfileSideNav";
 import getUserServerSide from "@/services/server/UserService";
+import { redirect } from "next/navigation";
 
 export default async function ProfileLayout({
   children,
@@ -9,6 +10,9 @@ export default async function ProfileLayout({
 }) {
   const user = await getUserServerSide();
 
+  if (user === undefined) {
+    return redirect("/login");
+  }
   return (
     <>
       <Header
