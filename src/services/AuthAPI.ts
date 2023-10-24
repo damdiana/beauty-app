@@ -1,4 +1,5 @@
 import { BASE_URL } from "@/Constants";
+import { User } from "./types";
 
 async function loginUser(
   email: string,
@@ -52,4 +53,38 @@ async function logoutUser(): Promise<{
     };
   }
 }
-export { loginUser, logoutUser };
+
+async function registerUser(
+  email: string,
+  password: string,
+  full_name: string
+): Promise<
+  | {
+      ok: true;
+      user: User;
+    }
+  | {
+      ok: false;
+      message: string;
+    }
+> {
+  let resp = await fetch(`${BASE_URL}/api/auth/register`, {
+    method: "POST",
+    body: JSON.stringify({ email, password, full_name }),
+  });
+  if (resp.ok) {
+    let jsonResp = await resp.json();
+    return {
+      ok: true,
+      user: jsonResp,
+    };
+  } else {
+    let jsonResp = await resp.json();
+    return {
+      ok: false,
+      message: jsonResp.message ?? "Something went wrong. Please try again.",
+    };
+  }
+}
+
+export { loginUser, logoutUser, registerUser };

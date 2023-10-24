@@ -14,6 +14,7 @@ import { cookies } from "next/headers";
 
 const SALT_ROUNDS = +(process.env.SALT_ROUNDS ?? "5");
 const requestType = z.object({
+  full_name: z.string(),
   email: z.string().email(),
   password: z.string(),
 });
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
     }
 
     const hash = bcrypt.hashSync(parsedBody.password, SALT_ROUNDS);
-    await insertUser(parsedBody.email, hash);
+    await insertUser(parsedBody.email, hash, parsedBody.full_name);
     let user = await selectUser(parsedBody.email);
     if (user !== undefined) {
       let jwt = await encodeJWT(user.id);
