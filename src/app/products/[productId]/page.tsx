@@ -6,6 +6,7 @@ import { getProductReviews } from "@/model/ProductReviewsModel";
 import { ProductReviewsSection } from "@/components/ProductReviewsSection";
 import { getProduct } from "@/model/ProductModel";
 import { notFound } from "next/navigation";
+import getUserServerSide from "@/services/server/UserService";
 
 export async function generateMetadata({
   params,
@@ -29,6 +30,7 @@ export default async function Page({
 }: {
   params: { productId: string };
 }) {
+  const user = await getUserServerSide();
   let product;
   try {
     product = await getProduct(params.productId);
@@ -39,6 +41,7 @@ export default async function Page({
   return (
     <div>
       <Header
+        user={user}
         nav={[
           {
             href: "#",

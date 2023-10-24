@@ -1,10 +1,17 @@
+import { User } from "@/services/types";
 import Header from "../Header/Header";
 import { HEADER_NAV } from "@/Constants";
 
-const CategoryPage = ({ children }: { children: React.ReactNode }) => {
+const CategoryPage = ({
+  children,
+  user,
+}: {
+  children: React.ReactNode;
+  user?: User;
+}) => {
   return (
     <>
-      <Header nav={HEADER_NAV} />
+      <Header nav={HEADER_NAV} user={user} />
       <main>{children}</main>
     </>
   );

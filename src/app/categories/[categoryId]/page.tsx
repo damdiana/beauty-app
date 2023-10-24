@@ -5,6 +5,7 @@ import ProductCard from "@/components/ProductCard/ProductCard";
 import { getCategory } from "@/model/CategoryModel";
 import { getProducts } from "@/model/ProductModel";
 import { Product } from "@/services/ProductAPI";
+import getUserServerSide from "@/services/server/UserService";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -30,6 +31,8 @@ export default async function Page({
 }: {
   params: { categoryId: string };
 }) {
+  const user = await getUserServerSide();
+
   let category = await getCategory(params.categoryId);
   if (category === undefined) {
     return notFound();
@@ -39,7 +42,7 @@ export default async function Page({
     products = await getProducts(params.categoryId);
     if (products.length === 0) {
       return (
-        <CategoryPage>
+        <CategoryPage user={user}>
           <p className="font-bold text-center text-xl"> {category.name}</p>
           <p className="m-2 text-center">
             There are no products for this category

@@ -1,9 +1,10 @@
-import CategoryPage from "@/components/CategoryPage/CategoryPage";
 import Header from "@/components/Header/Header";
 import ProductCard from "@/components/ProductCard/ProductCard";
 import { getProducts } from "@/model/ProductModel";
+import getUserServerSide from "@/services/server/UserService";
 export default async function Home() {
   let products;
+  const user = await getUserServerSide();
   try {
     products = await getProducts();
   } catch (err) {
@@ -11,6 +12,7 @@ export default async function Home() {
     return (
       <>
         <Header
+          user={user}
           nav={[
             {
               href: "https://github.com/damdiana?tab=repositories",
@@ -37,6 +39,7 @@ export default async function Home() {
   return (
     <div>
       <Header
+        user={user}
         nav={[
           {
             href: "https://github.com/damdiana?tab=repositories",
