@@ -1,6 +1,21 @@
 import { getPostgresClient } from "@/services/server/database";
 import { User } from "@/services/types";
 
+type DB_User = Omit<User, "fullName"> & {
+  full_name: string;
+};
+
+async function selectUserById(id: number): Promise<User | undefined> {
+  const client = await getPostgresClient();
+  let response = await client.query(`SELECT * FROM Users WHERE id = $1`, [id]);
+
+  if (response.rowCount === 0) {
+    return undefined;
+  } else {
+    const user = decodeUserFromDB(response.rows[0]);
+    return user;
+  }
+}
 async function selectUser(email: string): Promise<User | undefined> {
   const client = await getPostgresClient();
   let response = await client.query(`SELECT * FROM Users WHERE email = $1`, [
@@ -10,7 +25,8 @@ async function selectUser(email: string): Promise<User | undefined> {
   if (response.rowCount === 0) {
     return undefined;
   } else {
-    return response.rows[0] as User;
+    const user = decodeUserFromDB(response.rows[0]);
+    return user;
   }
 }
 
@@ -45,4 +61,23 @@ function sanitizeUser(user: User) {
   return newUser;
 }
 
-export { selectUser, insertUser, userAlreadyExists, sanitizeUser };
+function decodeUserFromDB(dbUser: DB_User): User {
+  const copyDbUser: Omit<DB_User, "full_name"> & { full_name?: string } = {
+    ...dbUser,
+  };
+  const fullName = dbUser.full_name;
+  delete copyDbUser.full_name;
+
+  return {
+    ...copyDbUser,
+    fullName,
+  };
+}
+
+export {
+  selectUser,
+  insertUser,
+  userAlreadyExists,
+  sanitizeUser,
+  selectUserById,
+};

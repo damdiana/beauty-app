@@ -20,7 +20,7 @@ async function encodeJWT(userID: number): Promise<string> {
 async function decodeJWT(token: string): Promise<number | undefined> {
   try {
     const parseData = await jose.jwtVerify(token, secret);
-    const result = jwtType.safeParse(parseData);
+    const result = jwtType.safeParse(parseData.payload);
     if (result.success) {
       return result.data.userID;
     }
