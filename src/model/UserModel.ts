@@ -1,10 +1,5 @@
 import { getPostgresClient } from "@/services/server/database";
-
-type User = {
-  email: string;
-  id: number;
-  password: string;
-};
+import { User } from "@/services/types";
 
 async function selectUser(email: string): Promise<User | undefined> {
   const client = await getPostgresClient();
@@ -15,24 +10,21 @@ async function selectUser(email: string): Promise<User | undefined> {
   if (response.rowCount === 0) {
     return undefined;
   } else {
-    return response.rows[0] as {
-      id: number;
-      email: string;
-      password: string;
-    };
+    return response.rows[0] as User;
   }
 }
 
-async function insertUser(email: string, password: string) {
+async function insertUser(email: string, password: string, fullName: string) {
   const client = await getPostgresClient();
   await client.query(
     `
     INSERT INTO Users (
       email,
-      password
+      password,
+      full_name
     )
-    VALUES ($1, $2)`,
-    [email, password]
+    VALUES ($1, $2, $3)`,
+    [email, password, fullName]
   );
 }
 

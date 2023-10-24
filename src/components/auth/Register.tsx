@@ -3,24 +3,44 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../Button-Link/Button/Button";
 import Input from "../Input/Input";
-import {
-  faEye,
-  faFileText,
-  faLock,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
-import Link from "../Button-Link/Link/Link";
+import { faFileText, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import { registerUser } from "@/services/AuthAPI";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
-  const sendRegistration: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [formError, setFormError] = useState("");
+
+  const router = useRouter();
+
+  const sendRegistration: React.FormEventHandler<HTMLFormElement> = async (
+    e
+  ) => {
     e.preventDefault();
+    setFormError("");
     const formData = {
       fullName: e.currentTarget.fullName.value,
       email: e.currentTarget.email.value,
       password: e.currentTarget.password.value,
     };
-
-    console.log(formData);
+    setIsLoading(true);
+    try {
+      let resp = await registerUser(
+        formData.email,
+        formData.password,
+        formData.fullName
+      );
+      if (resp.ok === true) {
+        router.replace("/");
+      } else {
+        setFormError(resp.message);
+      }
+    } catch (err) {
+      setFormError("Failed to login");
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <form
@@ -59,19 +79,6 @@ const Register = () => {
         id="email"
       />
 
-      <label htmlFor="email" className="my-4">
-        <FontAwesomeIcon icon={faUser} className="mr-2 h-5 w-5" />
-        Confirm your email address
-      </label>
-      <Input
-        className="w-full"
-        type="email"
-        required
-        size="small"
-        name="email"
-        id="email"
-      />
-
       <label htmlFor="password" className="my-4">
         <FontAwesomeIcon icon={faLock} className="mr-2 h-5 w-5" />
         Password
@@ -84,28 +91,19 @@ const Register = () => {
         name="password"
         id="password"
       />
-
-      <label htmlFor="password" className="my-4">
-        <FontAwesomeIcon icon={faLock} className="mr-2 h-5 w-5" />
-        Confirm your password
-      </label>
-      <Input
-        className="w-full"
-        type="password"
-        required
-        size="small"
-        name="password"
-        id="password"
-      />
       <Button
         size="medium"
-        color="black"
+        color={`${isLoading === false ? "black" : "beige"}`}
         variant="full"
         type="submit"
+        disabled={isLoading}
         className="mt-4 rounded-2xl w-full"
       >
-        Register
+        {isLoading === true ? "Loading..." : "Register"}
       </Button>
+      {formError !== "" && (
+        <p className="text-red-500 font-bold"> {formError} </p>
+      )}
     </form>
   );
 };
