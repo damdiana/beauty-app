@@ -25,7 +25,7 @@ const ProfileSideNav = () => {
     try {
       let resp = await logoutUser();
       if (resp.ok === true) {
-        router.push("/");
+        router.replace("/");
       } else {
         setFormError(resp.message);
       }
