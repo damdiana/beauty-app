@@ -43,3 +43,9 @@ CREATE TABLE Categories (
     name VARCHAR(255),
     slug VARCHAR(255)
 )
+
+CREATE TABLE FavoriteProducts (
+    user_id INT,
+    product_id VARCHAR(255),
+    PRIMARY KEY (user_id, product_id)
+) 
