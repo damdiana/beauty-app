@@ -1,14 +1,36 @@
+"use client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../Button-Link/Button/Button";
 import Link from "../Button-Link/Link/Link";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as faHeartEmpty } from "@fortawesome/free-regular-svg-icons";
 import { Product } from "@/services/ProductAPI";
 
 type Props = {
   product: Omit<Product, "description" | "ingredients">;
+  isFavorite: boolean;
+  hasError: boolean;
+  onAdd?: () => void;
+  onDelete: () => void;
 };
 
-const ProductCard = ({ product }: Props) => {
+const ProductCard = ({
+  product,
+  isFavorite,
+  hasError,
+  onAdd,
+  onDelete,
+}: Props) => {
+  const handleClick = () => {
+    if (!isFavorite) {
+      if (onAdd !== undefined) {
+        onAdd();
+      }
+    } else {
+      onDelete();
+    }
+  };
+
   return (
     <section className="text-center cursor-pointer my-2 py-2">
       <div className="flex-col p-2">
@@ -30,10 +52,19 @@ const ProductCard = ({ product }: Props) => {
           </span>
           <p className="font-bold">{product.name} </p>
         </Link>
-        <Button variant="full" color="black" size="medium" className="mt-2">
-          <span className="mr-1"> Add to favorites </span>
-          <FontAwesomeIcon icon={faHeart} className="h-5 w-5" />
+        <Button
+          variant="text"
+          color="black"
+          size="medium"
+          className="mt-2"
+          onClick={handleClick}
+        >
+          <FontAwesomeIcon
+            icon={isFavorite ? faHeartSolid : faHeartEmpty}
+            className="h-5 w-5"
+          />
         </Button>
+        {hasError ? <p className="text-red-500"> Oops! Action failed! </p> : ""}
       </div>
     </section>
   );

@@ -1,3 +1,11 @@
 .card-grid-cols-3 {
     grid-template-columns: repeat(auto-fill, minmax(min(400px, 100%), 3fr));
 }
+
+.card-grid-cols-5 {
+    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 5fr));
+}
+
+.favorites-page {
+    overflow: scroll;
+}
