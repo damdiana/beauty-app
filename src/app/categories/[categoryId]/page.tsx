@@ -1,6 +1,8 @@
 import CategoryPage from "@/components/CategoryPage/CategoryPage";
 import ProductCard from "@/components/ProductCard/ProductCard";
+import ProductGallery from "@/components/ProductGallery";
 import { getCategory } from "@/model/CategoryModel";
+import { getFavorites } from "@/model/FavoriteProductsModel";
 import { getProducts } from "@/model/ProductModel";
 import { Product } from "@/services/ProductAPI";
 import getUserServerSide from "@/services/server/UserService";
@@ -30,31 +32,41 @@ export default async function Page({
   params: { categoryId: string };
 }) {
   const user = await getUserServerSide();
+  let products: Product[] = [];
+  let category = undefined;
 
-  let category = await getCategory(params.categoryId);
+  try {
+    [products, category] = await Promise.all([
+      getProducts(params.categoryId),
+      getCategory(params.categoryId),
+    ]);
+  } catch (err) {
+    console.error(err);
+  }
+  let favoriteProductsIds: string[] = [];
+
   if (category === undefined) {
     return notFound();
   }
-  let products: Product[];
-  try {
-    products = await getProducts(params.categoryId);
-    if (products.length === 0) {
-      return (
-        <CategoryPage user={user}>
-          <p className="font-bold text-center text-xl"> {category.name}</p>
-          <p className="m-2 text-center">
-            There are no products for this category
-          </p>
-        </CategoryPage>
-      );
-    }
-  } catch (err) {
-    console.log("Failed to select products", err);
+
+  if (products.length === 0) {
     return (
       <CategoryPage user={user}>
-        <p className="m-2 text-center"> Failed to list products </p>
+        <p className="font-bold text-center text-xl"> {category.name}</p>
+        <p className="m-2 text-center">
+          There are no products for this category
+        </p>
       </CategoryPage>
     );
+  }
+
+  if (user !== undefined) {
+    try {
+      let favorites = await getFavorites(user.id);
+      favoriteProductsIds = favorites.map((favorite) => favorite.id);
+    } catch (err) {
+      console.error("Failed to show favorite products", err);
+    }
   }
 
   return (
@@ -62,13 +74,10 @@ export default async function Page({
       <CategoryPage user={user}>
         <p className="font-bold text-center text-xl"> {category.name}</p>
         <div className="grid card-grid-cols-3 mt-4 gap-4">
-          {products.map((product) => {
-            return (
-              <div key={product.id}>
-                <ProductCard product={product} />
-              </div>
-            );
-          })}
+          <ProductGallery
+            products={products}
+            initialFavorites={favoriteProductsIds}
+          />
         </div>
       </CategoryPage>
     </div>
