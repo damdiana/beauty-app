@@ -26,6 +26,10 @@ const ProfileSideNav = () => {
       let resp = await logoutUser();
       if (resp.ok === true) {
         router.replace("/");
+        //  Refresh the router to clear user data on logout.
+        // Without this, the name of the user (right side up) remains for a few seconds,
+        //  even after the logout.
+        router.refresh();
       } else {
         setFormError(resp.message);
       }
