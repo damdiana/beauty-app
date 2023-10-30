@@ -28,7 +28,7 @@ CREATE TABLE Users (
 CREATE TABLE ProductReviews (
     id SERIAL PRIMARY KEY,
     added_at DATE NOT NULL DEFAULT CURRENT_DATE, 
-    user_id VARCHAR(255) NOT NULL,
+    user_id NUMERIC NOT NULL,
     product_id VARCHAR(255) NOT NULL,
     product_name VARCHAR(255) NOT NULL,
     recommending BOOLEAN NOT NULL DEFAULT FALSE,

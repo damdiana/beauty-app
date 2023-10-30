@@ -2,7 +2,8 @@ import { getPostgresClient } from "@/services/server/database";
 
 export type ProductReview = {
   id: string;
-  user_id: string;
+  user_id: number;
+  full_name: string;
   product_id: string;
   product_name: string;
   review: string;
@@ -38,7 +39,7 @@ async function insertReview(
 }
 
 async function getProductReviewByUser(
-  user_id: string,
+  user_id: number,
   product_id: string
 ): Promise<ProductReview | undefined> {
   const client = await getPostgresClient();
@@ -46,6 +47,8 @@ async function getProductReviewByUser(
     `
     SELECT *
     FROM ProductReviews
+    INNER JOIN users ON productreviews.user_id = users.id
+    INNER JOIN products ON productreviews.product_id = products.id
     WHERE user_id = $1 AND product_id = $2`,
     [user_id, product_id]
   );
@@ -76,6 +79,8 @@ async function getProductReviews(product_id: string): Promise<ProductReview[]> {
     `
     SELECT  * 
     FROM ProductReviews
+    INNER JOIN users ON productreviews.user_id = users.id
+    INNER JOIN products ON productreviews.product_id = products.id
     WHERE
         product_id = $1`,
     [product_id]

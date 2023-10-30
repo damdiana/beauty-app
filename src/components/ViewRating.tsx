@@ -9,7 +9,7 @@ const ViewRating = ({ review }: { review: ProductReview }) => {
   return (
     <div className="flex justify-between px-4 mt-2 pb-2 border-b border-solid border-grey w-full">
       <div className="w-4/12">
-        <p className="font-bold"> {review.user_id} </p>
+        <p className="font-bold"> {review.full_name} </p>
         <p>
           <span className="font-bold"> Rating </span> {review.rating}
         </p>

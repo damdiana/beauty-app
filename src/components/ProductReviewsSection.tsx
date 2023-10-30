@@ -3,10 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ViewRating } from "./ViewRating";
 import FeedbackForm from "./FeedbackForm/FeedbackForm";
 import { faFaceFrownOpen } from "@fortawesome/free-solid-svg-icons";
-import {
-  ProductReview,
-  ProductReview as ProductReviewsSection,
-} from "@/model/ProductReviewsModel";
+import { ProductReview } from "@/model/ProductReviewsModel";
 import { useState } from "react";
 import {
   ProductReviewPostPayload,
@@ -18,7 +15,7 @@ const ProductReviewsSection = ({
   productId,
 }: {
   productId: string;
-  initialReviews: ProductReviewsSection[];
+  initialReviews: ProductReview[];
 }) => {
   const [productReviews, setProductReviews] =
     useState<ProductReview[]>(initialReviews);
