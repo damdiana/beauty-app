@@ -10,30 +10,38 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [formError, setFormError] = useState("");
+  const [wizard, setWizard] = useState<
+    | {
+        type: "initial";
+      }
+    | {
+        type: "loading";
+      }
+    | {
+        type: "error";
+        message: string;
+      }
+  >({ type: "initial" });
 
   const router = useRouter();
 
   const sendForm: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    setFormError("");
     const formData = {
       email: e.currentTarget.email.value,
       password: e.currentTarget.password.value,
     };
-    setIsLoading(true);
+
+    setWizard({ type: "loading" });
     try {
       let resp = await loginUser(formData.email, formData.password);
       if (resp.ok === true) {
         router.replace("/");
       } else {
-        setFormError(resp.message);
+        setWizard({ type: "error", message: resp.message });
       }
     } catch (err) {
-      setFormError("Failed to login");
-    } finally {
-      setIsLoading(false);
+      setWizard({ type: "error", message: "Failed to login" });
     }
   };
 
@@ -76,14 +84,16 @@ const Login = () => {
       <Button
         type="submit"
         variant="full"
-        color={`${isLoading === false ? "black" : "beige"}`}
+        color={`${wizard.type !== "loading" ? "black" : "beige"}`}
         size="medium"
         className="mt-6 rounded-2xl w-full "
-        disabled={isLoading}
+        disabled={wizard.type === "loading"}
       >
-        {isLoading === true ? "Loading..." : "Login to your account"}
+        {wizard.type === "loading" ? "Loading..." : "Login to your account"}
       </Button>
-      <p className="text-red-500 font-bold">{formError} </p>
+      {wizard.type === "error" && (
+        <p className="text-red-500 font-bold">{wizard.message}</p>
+      )}
     </form>
   );
 };
