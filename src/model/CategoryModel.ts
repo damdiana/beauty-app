@@ -20,4 +20,18 @@ async function getCategory(categoryId: string): Promise<Category | undefined> {
   return categoryRow as Category;
 }
 
-export { getCategory };
+async function getCategories(): Promise<Category[]> {
+  const client = await getPostgresClient();
+  const categoryResult = await client.query(
+    `
+    SELECT *
+    FROM categories
+  `,
+    []
+  );
+  const categoryRows = categoryResult.rows;
+
+  return categoryRows as Category[];
+}
+
+export { getCategory, getCategories };

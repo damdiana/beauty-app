@@ -1,3 +1,4 @@
+import { HEADER_NAV } from "@/Constants";
 import Header from "@/components/Header/Header";
 import ProductCard from "@/components/ProductCard/ProductCard";
 import { getProducts } from "@/model/ProductModel";
@@ -11,54 +12,14 @@ export default async function Home() {
     console.log("Failed to select products", err);
     return (
       <>
-        <Header
-          user={user}
-          nav={[
-            {
-              href: "https://github.com/damdiana?tab=repositories",
-              title: "Body",
-            },
-            {
-              href: "https://github.com/damdiana?tab=repositories",
-              title: "Face",
-            },
-            {
-              href: "https://github.com/damdiana?tab=repositories",
-              title: "New",
-            },
-            {
-              href: "https://github.com/damdiana?tab=repositories",
-              title: "Trending",
-            },
-          ]}
-        />
+        <Header nav={HEADER_NAV} user={user} />
         <p className="m-2 text-center"> Failed to list products </p>
       </>
     );
   }
   return (
     <div>
-      <Header
-        user={user}
-        nav={[
-          {
-            href: "https://github.com/damdiana?tab=repositories",
-            title: "Body",
-          },
-          {
-            href: "https://github.com/damdiana?tab=repositories",
-            title: "Face",
-          },
-          {
-            href: "https://github.com/damdiana?tab=repositories",
-            title: "New",
-          },
-          {
-            href: "https://github.com/damdiana?tab=repositories",
-            title: "Trending",
-          },
-        ]}
-      />
+      <Header nav={HEADER_NAV} user={user} />
       <div className="grid card-grid-cols-3 mt-4 gap-4">
         {products.length > 0 ? (
           <>

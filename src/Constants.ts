@@ -11,20 +11,20 @@ const BASE_URL = typeof window === "undefined" ? SERVER_URL : CLIENT_URL;
 
 const HEADER_NAV = [
   {
-    href: "#",
-    title: "Body",
+    href: "/categories",
+    title: "All Categories",
   },
   {
-    href: "#",
-    title: "Face",
+    href: "/categories/74",
+    title: "Eyes",
   },
   {
-    href: "#",
-    title: "New",
+    href: "/categories/779",
+    title: "Powder",
   },
   {
-    href: "#",
-    title: "Trending",
+    href: "/categories/73",
+    title: "Makup",
   },
 ];
 

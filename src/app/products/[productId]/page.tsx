@@ -7,6 +7,7 @@ import { ProductReviewsSection } from "@/components/ProductReviewsSection";
 import { getProduct } from "@/model/ProductModel";
 import { notFound } from "next/navigation";
 import getUserServerSide from "@/services/server/UserService";
+import { HEADER_NAV } from "@/Constants";
 
 export async function generateMetadata({
   params,
@@ -40,27 +41,7 @@ export default async function Page({
   let reviews = await getProductReviews(params.productId);
   return (
     <div>
-      <Header
-        user={user}
-        nav={[
-          {
-            href: "#",
-            title: "Body",
-          },
-          {
-            href: "#",
-            title: "Face",
-          },
-          {
-            href: "#",
-            title: "New",
-          },
-          {
-            href: "#",
-            title: "Trending",
-          },
-        ]}
-      />
+      <Header nav={HEADER_NAV} user={user} />
       {product !== undefined ? (
         <div>
           <ProductScreen product={product} />

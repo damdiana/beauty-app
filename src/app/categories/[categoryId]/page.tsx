@@ -1,6 +1,4 @@
-import { HEADER_NAV } from "@/Constants";
 import CategoryPage from "@/components/CategoryPage/CategoryPage";
-import Header from "@/components/Header/Header";
 import ProductCard from "@/components/ProductCard/ProductCard";
 import { getCategory } from "@/model/CategoryModel";
 import { getProducts } from "@/model/ProductModel";
