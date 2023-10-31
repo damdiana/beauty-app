@@ -53,7 +53,7 @@ export default async function Page({
   } catch (err) {
     console.log("Failed to select products", err);
     return (
-      <CategoryPage>
+      <CategoryPage user={user}>
         <p className="m-2 text-center"> Failed to list products </p>
       </CategoryPage>
     );
@@ -61,7 +61,7 @@ export default async function Page({
 
   return (
     <div>
-      <CategoryPage>
+      <CategoryPage user={user}>
         <p className="font-bold text-center text-xl"> {category.name}</p>
         <div className="grid card-grid-cols-3 mt-4 gap-4">
           {products.map((product) => {
