@@ -1,7 +1,4 @@
 "use client";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { faStar as faStarOutline } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import Button from "../Button-Link/Button/Button";
 import { ProductReview } from "@/model/ProductReviewsModel";
@@ -26,18 +23,26 @@ const FeedbackForm = ({
   >;
 }) => {
   const [rating, setRating] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [formError, setFormError] = useState("");
+  const [wizard, setWizard] = useState<
+    | {
+        type: "initial";
+      }
+    | {
+        type: "loading";
+      }
+    | {
+        type: "error";
+        message: string;
+      }
+  >({ type: "initial" });
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
-    setFormError("");
-
     if (rating === 0) {
-      return setFormError("Rating Mandatory!");
+      return setWizard({ type: "error", message: "Rating Mandatory!" });
     }
 
-    setIsLoading(true);
+    setWizard({ type: "loading" });
 
     try {
       const review: ProductReviewPostPayload = {
@@ -50,12 +55,12 @@ const FeedbackForm = ({
       };
       let resp = await onAddReview(review);
       if (resp.ok === false) {
-        setFormError(resp.message);
+        setWizard({ type: "error", message: resp.message });
+      } else {
+        setWizard({ type: "initial" });
       }
     } catch (err) {
-      setFormError("Failed to add review");
-    } finally {
-      setIsLoading(false);
+      setWizard({ type: "error", message: "Failed to add review" });
     }
   };
   return (
@@ -102,7 +107,9 @@ const FeedbackForm = ({
             cols={80}
           />
         </div>
-        <p className="text-red-500 font-bold">{formError} </p>
+        {wizard.type === "error" && (
+          <p className="text-red-500 font-bold">{wizard.message}</p>
+        )}
         <Button
           variant="full"
           color="black"
@@ -110,7 +117,7 @@ const FeedbackForm = ({
           className="m-4 p-2 rounded-xl font-bold reviewProduct-hoover"
           type="submit"
         >
-          {isLoading === true ? "LOADING" : "SUBMIT"}
+          {wizard.type === "loading" ? "LOADING" : "SUBMIT"}
         </Button>
       </form>
     </div>

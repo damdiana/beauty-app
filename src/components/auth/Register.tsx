@@ -9,22 +9,30 @@ import { registerUser } from "@/services/AuthAPI";
 import { useRouter } from "next/navigation";
 
 const Register = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [formError, setFormError] = useState("");
-
+  const [wizard, setWizard] = useState<
+    | {
+        type: "initial";
+      }
+    | {
+        type: "loading";
+      }
+    | {
+        type: "error";
+        message: string;
+      }
+  >({ type: "initial" });
   const router = useRouter();
 
   const sendRegistration: React.FormEventHandler<HTMLFormElement> = async (
     e
   ) => {
     e.preventDefault();
-    setFormError("");
     const formData = {
       fullName: e.currentTarget.fullName.value,
       email: e.currentTarget.email.value,
       password: e.currentTarget.password.value,
     };
-    setIsLoading(true);
+    setWizard({ type: "loading" });
     try {
       let resp = await registerUser(
         formData.email,
@@ -34,12 +42,10 @@ const Register = () => {
       if (resp.ok === true) {
         router.replace("/");
       } else {
-        setFormError(resp.message);
+        setWizard({ type: "error", message: resp.message });
       }
     } catch (err) {
-      setFormError("Failed to login");
-    } finally {
-      setIsLoading(false);
+      setWizard({ type: "error", message: "Failed to register" });
     }
   };
   return (
@@ -93,16 +99,16 @@ const Register = () => {
       />
       <Button
         size="medium"
-        color={`${isLoading === false ? "black" : "beige"}`}
+        color={`${wizard.type !== "loading" ? "black" : "beige"}`}
         variant="full"
         type="submit"
-        disabled={isLoading}
+        disabled={wizard.type === "loading"}
         className="mt-4 rounded-2xl w-full"
       >
-        {isLoading === true ? "Loading..." : "Register"}
+        {wizard.type === "loading" ? "Loading..." : "Register"}
       </Button>
-      {formError !== "" && (
-        <p className="text-red-500 font-bold"> {formError} </p>
+      {wizard.type === "error" && (
+        <p className="text-red-500 font-bold">{wizard.message}</p>
       )}
     </form>
   );
