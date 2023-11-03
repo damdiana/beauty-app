@@ -19,7 +19,7 @@ export default async function ProfileLayout({
       <Header nav={HEADER_NAV} user={user} />
       <main className="h-screen">
         <div className="flex mt-4 w-full h-full">
-          <ProfileSideNav />
+          <ProfileSideNav className="w-52 m-2 hidden sm:flex" />
           <div className="w-full">{children}</div>
         </div>
       </main>
