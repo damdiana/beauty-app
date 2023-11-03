@@ -22,6 +22,7 @@ const ProductCard = ({ product }: Props) => {
             src={product.images[0]}
             alt={product.name}
             width="250"
+            height="250"
             className="m-auto p-2"
           />
           <span className="font-bold tracking-wide uppercase block mb-0.5">
