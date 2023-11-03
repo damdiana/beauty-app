@@ -1,41 +1,6 @@
-.Header nav a {
-    display: inline-block;
+.Header .user-profile:hover .ProfileSideNav {
+    display: flex;
 }
 
-.Header nav a:hover{
-    background-color: #fff;
-    color:#000;
-    border-radius: 0;
-    cursor: pointer;
-}
 
-.Header .menuButton {
-    display: none;
-}
-
-.Header .inputButton {
-    display: none;
-}
-
-/* Mobile */
-
-@media screen and (max-width: 400px) {
-
-    .Header nav {
-        display: none
-    }
-
-    .Header .nav--open {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .Header .logo {
-    display: none;
-   } 
-
-   .Header .menuButton {
-        display: block;
-}
-}
 

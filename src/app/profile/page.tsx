@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const ProfilePage = () => {
   return (
     <div className="w-full h-full flex">
-      <div className="m-2 p-1 border w-full flex flex-col h-4/5 ">
+      <div className="m-2 p-1 border w-full flex flex-col ">
         <h2 className="text-lg m-2"> My Profile </h2>
         <ProfileView
           userProfile={{

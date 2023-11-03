@@ -13,7 +13,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { logoutUser } from "@/services/AuthAPI";
 
-const ProfileSideNav = () => {
+type Props = {
+  className?: string;
+};
+
+const ProfileSideNav = ({ className }: Props) => {
   const [formError, setFormError] = useState("");
   const currentRoute = usePathname();
 
@@ -38,12 +42,17 @@ const ProfileSideNav = () => {
     }
   };
 
+  let commonClassNames =
+    "no-underline block p-2.5 hover:bg-black hover:text-white";
+
   return (
-    <div className="flex flex-col m-2 p-1 border gap-2 w-3/12 h-min">
-      <h1 className="text-lg font-bold">My account</h1>
+    <div
+      className={`${className} flex-col p-1 border gap-2 h-min hidden bg-white ProfileSideNav`}
+    >
+      <h1 className="text-lg font-bold m-0 p-2.5">My account</h1>
       <Link
         href="/profile/settings"
-        className={`p-1 ${
+        className={`${commonClassNames} ${
           currentRoute === "/profile/settings" ? activeClasses : ""
         }`}
       >
@@ -52,13 +61,15 @@ const ProfileSideNav = () => {
       </Link>
       <Link
         href="/profile"
-        className={`p-1 ${currentRoute === "/profile" ? activeClasses : ""}`}
+        className={`${commonClassNames} ${
+          currentRoute === "/profile" ? activeClasses : ""
+        }`}
       >
         <FontAwesomeIcon icon={faUser} className="mr-3 h-5 w-5" /> My Profile
       </Link>
       <Link
         href="/profile/editprofile"
-        className={`p-1 ${
+        className={`${commonClassNames} ${
           currentRoute === "/profile/editprofile" ? activeClasses : ""
         }`}
       >
@@ -66,7 +77,7 @@ const ProfileSideNav = () => {
       </Link>
       <Link
         href="/profile/favorites"
-        className={`p-1 ${
+        className={`${commonClassNames} ${
           currentRoute === "/profile/favorites" ? activeClasses : ""
         }`}
       >
@@ -74,14 +85,20 @@ const ProfileSideNav = () => {
       </Link>
       <Link
         href="/profile/help"
-        className={` mb-2 p-1 ${
+        className={` mb-2 ${commonClassNames} ${
           currentRoute === "/profile/help" ? activeClasses : ""
         }`}
       >
-        <FontAwesomeIcon icon={faQuestion} className="ml-3 h-5 w-5" />
+        <FontAwesomeIcon icon={faQuestion} className="mr-3 h-5 w-5" />
         <span className="pl-2"> Help </span>
       </Link>
-      <Button variant="text" color="black" size="medium" onClick={logout}>
+      <Button
+        variant="text"
+        color="black"
+        size="medium"
+        onClick={logout}
+        className=" hover:bg-black hover:text-white"
+      >
         <FontAwesomeIcon icon={faRightFromBracket} className="h-5 w-5" />
       </Button>
       {formError !== "" && (
