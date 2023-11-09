@@ -41,6 +41,7 @@ const FeedbackForm = ({
     if (rating === 0) {
       return setWizard({ type: "error", message: "Rating Mandatory!" });
     }
+    let form = event.currentTarget;
 
     setWizard({ type: "loading" });
 
@@ -57,9 +58,11 @@ const FeedbackForm = ({
       if (resp.ok === false) {
         setWizard({ type: "error", message: resp.message });
       } else {
+        form.reset();
         setWizard({ type: "initial" });
       }
     } catch (err) {
+      console.error(err);
       setWizard({ type: "error", message: "Failed to add review" });
     }
   };
