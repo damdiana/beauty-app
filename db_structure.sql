@@ -42,6 +42,7 @@ CREATE TABLE Categories (
     id INT PRIMARY KEY,
     name VARCHAR(255),
     slug VARCHAR(255)
+    image VARCHAR(255)
 )
 
 CREATE TABLE FavoriteProducts (

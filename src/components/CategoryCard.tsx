@@ -10,11 +10,17 @@ const CategoryCard = ({ category }: { category: Category }) => {
         className="no-underline"
       >
         <img
-          src="https://picsum.photos/200"
-          alt="https://picsum.photos/200"
+          src={
+            category.image !== null
+              ? category.image
+              : "/assets/category_default.png"
+          }
+          alt={category.name}
           width="250"
+          height="250"
           className="m-auto p-2"
         />
+
         <p className="font-bold tracking-wide uppercase block mb-0.5">
           {category.name}
         </p>
