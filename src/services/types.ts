@@ -2,6 +2,7 @@ export type Category = {
   id: string;
   name: string;
   slug: string;
+  image: string | null;
 };
 
 export type User = {
