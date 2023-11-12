@@ -20,7 +20,7 @@ const Header = ({ nav, user }: Props) => {
     setShowNav(!showNav);
   };
   return (
-    <header className="Header">
+    <header className="Header sticky bg-white top-0">
       <div className="flex justify-between items-center p-4">
         <Button
           variant="text"
