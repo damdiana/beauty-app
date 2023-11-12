@@ -26,8 +26,12 @@ const ProductGallery = ({ products, initialFavorites }: Props) => {
   const addToFavorites = async (id: string) => {
     try {
       removeErrorFromProduct(id);
-      await postFavoriteProduct(id);
-      setFavorites((prevFavorites) => [...prevFavorites, id]);
+      let resp = await postFavoriteProduct(id);
+      if (resp.ok === true) {
+        setFavorites((prevFavorites) => [...prevFavorites, id]);
+      } else {
+        addErrorToProduct(id);
+      }
     } catch (error) {
       addErrorToProduct(id);
     }
@@ -36,10 +40,14 @@ const ProductGallery = ({ products, initialFavorites }: Props) => {
   const deleteFromFavorites = async (id: string) => {
     try {
       removeErrorFromProduct(id);
-      await deleteFavoriteProduct(id);
-      setFavorites((prevFavorites) =>
-        prevFavorites.filter((favId) => favId !== id)
-      );
+      let resp = await deleteFavoriteProduct(id);
+      if (resp.ok === true) {
+        setFavorites((prevFavorites) =>
+          prevFavorites.filter((favId) => favId !== id)
+        );
+      } else {
+        addErrorToProduct(id);
+      }
     } catch (error) {
       addErrorToProduct(id);
     }
