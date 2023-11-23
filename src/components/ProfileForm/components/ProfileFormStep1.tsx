@@ -3,28 +3,18 @@ import { useEffect, useState } from "react";
 import { ProfileFormNavigationButtons } from "./ProfileForm/ProfileFormNavigationButtons";
 
 export type ProfileFormStep1Prop = {
-  skinTypes: ("dry" | "oily" | "combination" | "sensitive" | "normal")[];
-  skinConcerns: ("acnee" | "dull" | "aging" | "wrinkles" | "sun_damage")[];
-  skinConditions: (
-    | "rosacea"
-    | "eczema"
-    | "melasma"
-    | "milia"
-    | "hyperpigmentation"
-  )[];
-  routineProducts: (
-    | "clenser"
-    | "moisturizer"
-    | "serum"
-    | "toner"
-    | "eyecream"
-    | "facemask"
-    | "micelarwater"
-    | "clenserbalm"
-    | "noroutine"
-  )[];
+  skinTypes: ProfileSkinType[];
+  skinConcerns: ProfileSkinConcern[];
+  skinConditions: ProfileSkinConditions[];
+  routineProducts: ProfileRoutineProducts[];
 };
 import ProfileFormLabelledInput from "./ProfileFormLabelledInput";
+import {
+  ProfileRoutineProducts,
+  ProfileSkinConcern,
+  ProfileSkinConditions,
+  ProfileSkinType,
+} from "@/services/types";
 
 const ProfileFormStep1 = ({
   data,
@@ -38,8 +28,8 @@ const ProfileFormStep1 = ({
   const [localData, setLocalData] = useState<ProfileFormStep1Prop>(data);
 
   useEffect(() => {
-    setLocalData({
-      ...localData,
+    setLocalData((prevValue) => {
+      return { ...prevValue };
     });
   }, []);
 
@@ -120,97 +110,151 @@ const ProfileFormStep1 = ({
     }
   };
 
+  const SkinTypes = [
+    {
+      label: "Dry",
+      value: ProfileSkinType.DRY,
+    },
+    {
+      label: "Oily",
+      value: ProfileSkinType.OILY,
+    },
+    {
+      label: "Combination",
+      value: ProfileSkinType.COMBINATION,
+    },
+    {
+      label: "Sensitive",
+      value: ProfileSkinType.SENSITIVE,
+    },
+    {
+      label: "Normal",
+      value: ProfileSkinType.NORMAL,
+    },
+  ];
+
+  const SkinConcerns = [
+    {
+      label: "Acnee and scaring",
+      value: ProfileSkinConcern.ACNEE,
+    },
+    {
+      label: "Dull and uneven skin tone",
+      value: ProfileSkinConcern.DULLNESS,
+    },
+    {
+      label: "Aging skin",
+      value: ProfileSkinConcern.AGING,
+    },
+    {
+      label: "Wrinkles and fine lines",
+      value: ProfileSkinConcern.WRINKLES,
+    },
+    {
+      label: "Sun damage",
+      value: ProfileSkinConcern.SUN_DAMAGE,
+    },
+  ];
+
+  const SkinConditions = [
+    {
+      label: "Rosacea",
+      value: ProfileSkinConditions.ROSACEA,
+    },
+    {
+      label: "Atopic dermatitis (Eczema)",
+      value: ProfileSkinConditions.DERMATITIS,
+    },
+    {
+      label: "Melasma",
+      value: ProfileSkinConditions.MELASMA,
+    },
+    {
+      label: "Milia",
+      value: ProfileSkinConditions.MILIA,
+    },
+    {
+      label: "Hyperpigmentation",
+      value: ProfileSkinConditions.HYPERPIGMENTATION,
+    },
+  ];
+
+  const RoutineProducts = [
+    {
+      label: "Clenser",
+      value: ProfileRoutineProducts.CLENSER,
+    },
+    {
+      label: "Moisturizer",
+      value: ProfileRoutineProducts.MOISTURIZER,
+    },
+    {
+      label: "Serum",
+      value: ProfileRoutineProducts.SERUM,
+    },
+    {
+      label: "Toner",
+      value: ProfileRoutineProducts.TONER,
+    },
+    {
+      label: "Eye Cream",
+      value: ProfileRoutineProducts.EYE_CREAM,
+    },
+    {
+      label: "Face Mask",
+      value: ProfileRoutineProducts.FACE_MASK,
+    },
+    {
+      label: "Micelar water",
+      value: ProfileRoutineProducts.MICELAR_WATER,
+    },
+    {
+      label: "Clenser balm",
+      value: ProfileRoutineProducts.CLENSER_BALM,
+    },
+    {
+      label: "I don't have a routine",
+      value: ProfileRoutineProducts.NO_ROUTINE,
+    },
+  ];
+
   return (
     <form className="flex flex-col" onSubmit={onSubmit}>
       <div className="flex justify-around">
         <div>
           <fieldset className="mb-2 flex flex-col">
             <legend className="mb-2 font-bold">What is your skin type?</legend>
-            <ProfileFormLabelledInput
-              label="Dry"
-              name="skin_type"
-              value="dry"
-              type="checkbox"
-              checked={localData.skinTypes.includes("dry")}
-              onChange={() => onTypeChange("dry")}
-            />
-            <ProfileFormLabelledInput
-              label="Oily"
-              name="skin_type"
-              value="oily"
-              type="checkbox"
-              checked={localData.skinTypes.includes("oily")}
-              onChange={() => onTypeChange("oily")}
-            />
-            <ProfileFormLabelledInput
-              label="Combination"
-              name="skin_type"
-              value="combination"
-              type="checkbox"
-              checked={localData.skinTypes.includes("combination")}
-              onChange={() => onTypeChange("combination")}
-            />
-            <ProfileFormLabelledInput
-              label="Sensitive"
-              name="skin_type"
-              value="sensitive"
-              type="checkbox"
-              checked={localData.skinTypes.includes("sensitive")}
-              onChange={() => onTypeChange("sensitive")}
-            />
-            <ProfileFormLabelledInput
-              label="Normal"
-              name="skin_type"
-              value="normal"
-              type="checkbox"
-              checked={localData.skinTypes.includes("normal")}
-              onChange={() => onTypeChange("normal")}
-            />
+            {SkinTypes.map((type) => {
+              return (
+                <ProfileFormLabelledInput
+                  key={type.label}
+                  label={type.label}
+                  name="skin_type"
+                  value={type.value}
+                  type="checkbox"
+                  checked={localData.skinTypes.includes(type.value)}
+                  onChange={() => onTypeChange(type.value)}
+                />
+              );
+            })}
           </fieldset>
           <fieldset className="mb-2 flex flex-col">
             <legend className="mb-2 font-bold">
               What are your skin concerns?
             </legend>
-            <ProfileFormLabelledInput
-              label="Acnee and scaring"
-              name="skin_concerns"
-              value="acnee"
-              type="checkbox"
-              checked={localData.skinConcerns.includes("acnee")}
-              onChange={() => onConcernsChange("acnee")}
-            />
-            <ProfileFormLabelledInput
-              label="Dull and uneven skin tone"
-              name="skin_concerns"
-              value="dull"
-              type="checkbox"
-              checked={localData.skinConcerns.includes("dull")}
-              onChange={() => onConcernsChange("dull")}
-            />
-            <ProfileFormLabelledInput
-              label="Aging skin"
-              name="skin_concerns"
-              value="aging"
-              type="checkbox"
-              checked={localData.skinConcerns.includes("aging")}
-              onChange={() => onConcernsChange("aging")}
-            />
-            <ProfileFormLabelledInput
-              label="Wrinkles and fine lines"
-              name="skin_concerns"
-              value="wrinkles"
-              type="checkbox"
-              checked={localData.skinConcerns.includes("wrinkles")}
-              onChange={() => onConcernsChange("wrinkles")}
-            />
-            <ProfileFormLabelledInput
-              label="Sun damage"
-              name="skin_concerns"
-              value="sun_damage"
-              type="checkbox"
-              checked={localData.skinConcerns.includes("sun_damage")}
-              onChange={() => onConcernsChange("sun_damage")}
-            />
+            {SkinConcerns.map((concern) => {
+              return (
+                <ProfileFormLabelledInput
+                  key={concern.label}
+                  label={concern.label}
+                  name="skin_concerns"
+                  value={concern.value}
+                  type="checkbox"
+                  checked={localData.skinConcerns.includes(concern.value)}
+                  onChange={() => onConcernsChange(concern.value)}
+                />
+              );
+            })}
           </fieldset>
         </div>
         <div>
@@ -218,131 +262,42 @@ const ProfileFormStep1 = ({
             <legend className="mb-2 font-bold">
               What are your skin conditions?
             </legend>
-            <ProfileFormLabelledInput
-              label="Rosacea"
-              name="skin_concerns"
-              value="rosacea"
-              type="checkbox"
-              checked={localData.skinConditions.includes("rosacea")}
-              onChange={() => onConditionsChange("rosacea")}
-            />
-            <ProfileFormLabelledInput
-              label="Atopic dermatitis (Eczema)"
-              name="skin_concerns"
-              value="eczema"
-              type="checkbox"
-              checked={localData.skinConditions.includes("eczema")}
-              onChange={() => onConditionsChange("eczema")}
-            />
-            <ProfileFormLabelledInput
-              label="Melasma"
-              name="skin_concerns"
-              value="melasma"
-              type="checkbox"
-              checked={localData.skinConditions.includes("melasma")}
-              onChange={() => onConditionsChange("melasma")}
-            />
-            <ProfileFormLabelledInput
-              label="Milia"
-              name="skin_concerns"
-              value="milia"
-              type="checkbox"
-              checked={localData.skinConditions.includes("milia")}
-              onChange={() => onConditionsChange("milia")}
-            />
-            <ProfileFormLabelledInput
-              label="Hyperpigmentation"
-              name="skin_concerns"
-              value="hyperpigmentation"
-              type="checkbox"
-              checked={localData.skinConditions.includes("hyperpigmentation")}
-              onChange={() => onConditionsChange("hyperpigmentation")}
-            />
+            {SkinConditions.map((condition) => {
+              return (
+                <ProfileFormLabelledInput
+                  key={condition.label}
+                  label={condition.label}
+                  name="skin_conditions"
+                  value={condition.value}
+                  type="checkbox"
+                  checked={localData.skinConditions.includes(condition.value)}
+                  onChange={() => onConditionsChange(condition.value)}
+                />
+              );
+            })}
           </fieldset>
           <fieldset className="mb-2 flex flex-col">
             <legend className="mb-2 font-bold">
               What product do you use in your routine?
             </legend>
-            <ProfileFormLabelledInput
-              label="Clenser"
-              name="skin_concerns"
-              value="clenser"
-              type="checkbox"
-              checked={localData.routineProducts.includes("clenser")}
-              onChange={() => onRoutineChange("clenser")}
-            />
-            <ProfileFormLabelledInput
-              label="Moisturizer"
-              name="skin_concerns"
-              value="moisturizer"
-              type="checkbox"
-              checked={localData.routineProducts.includes("moisturizer")}
-              onChange={() => onRoutineChange("clenser")}
-            />
-            <ProfileFormLabelledInput
-              label="Serum"
-              name="skin_concerns"
-              value="serum"
-              type="checkbox"
-              checked={localData.routineProducts.includes("serum")}
-              onChange={() => onRoutineChange("serum")}
-            />
-            <ProfileFormLabelledInput
-              label="Toner"
-              name="skin_concerns"
-              value="toner"
-              type="checkbox"
-              checked={localData.routineProducts.includes("toner")}
-              onChange={() => onRoutineChange("toner")}
-            />
-            <ProfileFormLabelledInput
-              label="Eye Cream"
-              name="skin_concerns"
-              value="eyecream"
-              type="checkbox"
-              checked={localData.routineProducts.includes("eyecream")}
-              onChange={() => onRoutineChange("eyecream")}
-            />
-            <ProfileFormLabelledInput
-              label="Face Mask"
-              name="skin_concerns"
-              value="facemask"
-              type="checkbox"
-              checked={localData.routineProducts.includes("facemask")}
-              onChange={() => onRoutineChange("facemask")}
-            />
-            <ProfileFormLabelledInput
-              label="Micelar water"
-              name="skin_concerns"
-              value="micelarwater"
-              type="checkbox"
-              checked={localData.routineProducts.includes("micelarwater")}
-              onChange={() => onRoutineChange("micelarwater")}
-            />
-            <ProfileFormLabelledInput
-              label="Clenser balm"
-              name="skin_concerns"
-              value="clenserbalm"
-              type="checkbox"
-              checked={localData.routineProducts.includes("clenserbalm")}
-              onChange={() => onRoutineChange("clenserbalm")}
-            />
-            <ProfileFormLabelledInput
-              label="I don't have a routine"
-              name="skin_concerns"
-              value="noroutine"
-              type="checkbox"
-              checked={localData.routineProducts.includes("noroutine")}
-              onChange={() => onRoutineChange("noroutine")}
-            />
+            {RoutineProducts.map((product) => {
+              return (
+                <ProfileFormLabelledInput
+                  key={product.label}
+                  label={product.label}
+                  name="routine_products"
+                  value={product.value}
+                  type="checkbox"
+                  checked={localData.routineProducts.includes(product.value)}
+                  onChange={() => onRoutineChange(product.value)}
+                />
+              );
+            })}
           </fieldset>
         </div>
       </div>
       <div>
-        <ProfileFormNavigationButtons
-          onPrevious={onPrevious}
-          onNext={onNext !== undefined ? () => onNext(localData) : undefined}
-        />
+        <ProfileFormNavigationButtons onPrevious={onPrevious} hasNext={true} />
       </div>
     </form>
   );

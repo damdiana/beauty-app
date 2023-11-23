@@ -1,20 +1,25 @@
 import React from "react";
-import { ProfileFormStep0Prop } from "./ProfileForm/components/ProfileFormStep0";
-import { ProfileFormStep1Prop } from "./ProfileForm/components/ProfileFormStep1";
-import { ProfileFormStep2Prop } from "./ProfileForm/components/ProfileFormStep2";
-import { ProfileFormStep3Prop } from "./ProfileForm/components/ProfileFormStep3";
 import Link from "next/link";
+import { UserProfile } from "@/services/types";
+import {
+  ProfileGenderLabels,
+  ProfileGoalsLabels,
+  ProfileMakeupBrandsLabels,
+  ProfileProductsUsedLabel,
+  ProfileRoutineProductsLabels,
+  ProfileSkinConcernLabels,
+  ProfileSkinConditionsLabels,
+  ProfileSkinTypeLabels,
+  ProfileSkincareBrandsLabels,
+} from "@/Constants";
 
-const ProfileView = ({
-  userProfile,
-}: {
-  userProfile: {
-    step0: ProfileFormStep0Prop;
-    step1: ProfileFormStep1Prop;
-    step2: ProfileFormStep2Prop;
-    step3: ProfileFormStep3Prop;
-  };
-}) => {
+let formatter = new Intl.DateTimeFormat("en-GB", {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+});
+
+const ProfileView = ({ userProfile }: { userProfile: UserProfile }) => {
   return (
     <div>
       <div className="border m-1 px-2 py-4 mb-4">
@@ -22,15 +27,28 @@ const ProfileView = ({
         <div className="flex justify-between">
           <div className="flex flex-col ">
             <p className="text-gray-600"> Gender </p>
-            <span> {userProfile.step0.gender} </span>
+            {userProfile.gender === undefined || userProfile.gender === null ? (
+              <Link
+                href="/profile/editprofile"
+                color="black"
+                className="rounded-2xl w-full underline"
+              >
+                Add your gender
+              </Link>
+            ) : (
+              <span> {ProfileGenderLabels[userProfile.gender]}</span>
+            )}
           </div>
-          <div className="flex flex-col ">
-            <p className="text-gray-600"> Birthday </p>
-            <span> {userProfile.step0.birthDate}</span>
-          </div>
+          {userProfile.birthdate !== undefined &&
+            userProfile.birthdate !== null && (
+              <div className="flex flex-col ">
+                <p className="text-gray-600"> Birthday </p>
+                <span>{formatter.format(userProfile.birthdate)}</span>
+              </div>
+            )}
           <div className="flex flex-col mr-2 ">
             <p className="text-gray-600"> My Goal(s) </p>
-            {userProfile.step0.goals.length === 0 ? (
+            {userProfile.goals.length === 0 ? (
               <Link
                 href="/profile/editprofile"
                 color="black"
@@ -39,10 +57,10 @@ const ProfileView = ({
                 Add your goal
               </Link>
             ) : (
-              userProfile.step0.goals.map((goal, index) => (
+              userProfile.goals.map((goal, index) => (
                 <React.Fragment key={goal}>
                   {index > 0 && ","}
-                  <span> {goal}</span>
+                  <span> {ProfileGoalsLabels[goal]}</span>
                 </React.Fragment>
               ))
             )}
@@ -56,7 +74,7 @@ const ProfileView = ({
           <div className="flex flex-col mb-2">
             <p className="text-gray-600"> Skin Type(s) </p>
             <div>
-              {userProfile.step1.skinTypes.length === 0 ? (
+              {userProfile.skin_types.length === 0 ? (
                 <Link
                   href="/profile/editprofile"
                   color="black"
@@ -65,10 +83,10 @@ const ProfileView = ({
                   Add your skin type
                 </Link>
               ) : (
-                userProfile.step1.skinTypes.map((skintype, index) => (
+                userProfile.skin_types.map((skintype, index) => (
                   <React.Fragment key={skintype}>
                     {index > 0 && ","}
-                    <span> {skintype}</span>
+                    <span> {ProfileSkinTypeLabels[skintype]}</span>
                   </React.Fragment>
                 ))
               )}
@@ -77,7 +95,7 @@ const ProfileView = ({
           <div className="flex flex-col mb-2">
             <p className="text-gray-600"> Skin Concern(s) </p>
             <div>
-              {userProfile.step1.skinConcerns.length === 0 ? (
+              {userProfile.skin_concerns.length === 0 ? (
                 <Link
                   href="/profile/editprofile"
                   color="black"
@@ -86,10 +104,10 @@ const ProfileView = ({
                   Add your skin concern(s)
                 </Link>
               ) : (
-                userProfile.step1.skinConcerns.map((concern, index) => (
+                userProfile.skin_concerns.map((concern, index) => (
                   <React.Fragment key={concern}>
                     {index > 0 && ","}
-                    <span> {concern}</span>
+                    <span> {ProfileSkinConcernLabels[concern]}</span>
                   </React.Fragment>
                 ))
               )}
@@ -98,7 +116,7 @@ const ProfileView = ({
           <div className="flex flex-col mb-2">
             <p className="text-gray-600"> Skin Condition(s) </p>
             <div>
-              {userProfile.step1.skinConditions.length === 0 ? (
+              {userProfile.skin_conditions.length === 0 ? (
                 <Link
                   href="/profile/editprofile"
                   color="black"
@@ -107,10 +125,10 @@ const ProfileView = ({
                   Add your skin condition(s)
                 </Link>
               ) : (
-                userProfile.step1.skinConditions.map((condition, index) => (
+                userProfile.skin_conditions.map((condition, index) => (
                   <React.Fragment key={condition}>
                     {index > 0 && ","}
-                    <span> {condition}</span>
+                    <span> {ProfileSkinConditionsLabels[condition]}</span>
                   </React.Fragment>
                 ))
               )}
@@ -119,7 +137,7 @@ const ProfileView = ({
           <div className="flex flex-col mb-2">
             <p className="text-gray-600 "> Products used in your routine </p>
             <div>
-              {userProfile.step1.routineProducts.length === 0 ? (
+              {userProfile.routine_products.length === 0 ? (
                 <Link
                   href="/profile/editprofile"
                   color="black"
@@ -128,10 +146,10 @@ const ProfileView = ({
                   Add your products
                 </Link>
               ) : (
-                userProfile.step1.routineProducts.map((product, index) => (
+                userProfile.routine_products.map((product, index) => (
                   <React.Fragment key={product}>
                     {index > 0 && ","}
-                    <span> {product}</span>
+                    <span> {ProfileRoutineProductsLabels[product]}</span>
                   </React.Fragment>
                 ))
               )}
@@ -140,7 +158,8 @@ const ProfileView = ({
           <div className="flex flex-col mb-2">
             <p className="text-gray-600"> Skincare brands used </p>
             <div>
-              {userProfile.step3.skincareBrands.length === 0 ? (
+              {userProfile.skincare_brands === undefined ||
+              userProfile.skincare_brands.length === 0 ? (
                 <Link
                   href="/profile/editprofile"
                   color="black"
@@ -149,10 +168,10 @@ const ProfileView = ({
                   Add skincare brands
                 </Link>
               ) : (
-                userProfile.step3.skincareBrands.map((brand, index) => (
+                userProfile.skincare_brands.map((brand, index) => (
                   <React.Fragment key={brand}>
                     {index > 0 && ","}
-                    <span> {brand}</span>
+                    <span> {ProfileSkincareBrandsLabels[brand]}</span>
                   </React.Fragment>
                 ))
               )}
@@ -165,12 +184,12 @@ const ProfileView = ({
         <div className="grid grid-cols-2">
           <div className="flex flex-col mt-2">
             <p className="text-gray-600"> Using makeup? </p>
-            <span> {userProfile.step2.makeup === true ? "Yes" : "No"} </span>
+            <span> {userProfile.using_makeup === true ? "Yes" : "No"} </span>
           </div>
           <div className="flex flex-col mb-2">
             <p className="text-gray-600 "> Makeup brands used </p>
             <div>
-              {userProfile.step3.makeupBrands.length === 0 ? (
+              {userProfile.makeup_brands.length === 0 ? (
                 <Link
                   href="/profile/editprofile"
                   color="black"
@@ -179,10 +198,10 @@ const ProfileView = ({
                   Add makeup brands
                 </Link>
               ) : (
-                userProfile.step3.makeupBrands.map((makeupbrand, index) => (
+                userProfile.makeup_brands.map((makeupbrand, index) => (
                   <React.Fragment key={makeupbrand}>
                     {index > 0 && ","}
-                    <span> {makeupbrand}</span>
+                    <span> {ProfileMakeupBrandsLabels[makeupbrand]}</span>
                   </React.Fragment>
                 ))
               )}
@@ -190,7 +209,7 @@ const ProfileView = ({
           </div>
           <div>
             <p className="text-gray-600 "> Makeup products used </p>
-            {userProfile.step2.productsUsed.length === 0 ? (
+            {userProfile.products_used.length === 0 ? (
               <Link
                 href="/profile/editprofile"
                 color="black"
@@ -199,10 +218,10 @@ const ProfileView = ({
                 Add your products
               </Link>
             ) : (
-              userProfile.step2.productsUsed.map((product, index) => (
+              userProfile.products_used.map((product, index) => (
                 <React.Fragment key={product}>
                   {index > 0 && ","}
-                  <span> {product}</span>
+                  <span> {ProfileProductsUsedLabel[product]}</span>
                 </React.Fragment>
               ))
             )}
