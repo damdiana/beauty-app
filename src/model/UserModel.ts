@@ -1,5 +1,5 @@
 import { getPostgresClient } from "@/services/server/database";
-import { User } from "@/services/types";
+import { User, UserProfile } from "@/services/types";
 
 type DB_User = Omit<User, "fullName"> & {
   full_name: string;
@@ -44,6 +44,27 @@ async function insertUser(email: string, password: string, fullName: string) {
   );
 }
 
+async function updateUser(id: number, profile: UserProfile) {
+  const client = await getPostgresClient();
+
+  const fieldsToUpdate = Object.entries(profile)
+    .filter(([key, value]) => value !== undefined)
+    .map(([key], index) => `${key} = $${index + 1}`);
+
+  const valuesToUpdate = Object.entries(profile)
+    .filter(([key, value]) => key !== "id" && value !== undefined)
+    .map(([key, value]) => JSON.stringify(value));
+
+  await client.query(
+    `UPDATE Users 
+    SET
+      ${fieldsToUpdate.join(",")}
+      WHERE id = ${id}
+  `,
+    [...valuesToUpdate]
+  );
+}
+
 async function userAlreadyExists(email: string): Promise<boolean> {
   const client = await getPostgresClient();
   let response = await client.query(`SELECT * FROM Users WHERE email = $1`, [
@@ -80,4 +101,5 @@ export {
   userAlreadyExists,
   sanitizeUser,
   selectUserById,
+  updateUser,
 };
