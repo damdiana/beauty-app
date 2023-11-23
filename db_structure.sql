@@ -27,15 +27,15 @@ CREATE TABLE Users (
     full_name VARCHAR(256) NOT NULL,
     gender gender,
     birthdate DATE,
-    goals jsonb,
-    skin_types jsonb,
-    skin_concerns jsonb,
-    skin_conditions jsonb,
-    routine_products jsonb,
+    goals jsonb DEFAULT '[]'::jsonb,
+    skin_types jsonb DEFAULT '[]'::jsonb,
+    skin_concerns jsonb DEFAULT '[]'::jsonb,
+    skin_conditions jsonb DEFAULT '[]'::jsonb,
+    routine_products jsonb DEFAULT '[]'::jsonb,
     using_makeup BOOLEAN,
-    products_used jsonb,
-    skincare_brands jsonb,
-    makeup_brands jsonb;
+    products_used jsonb DEFAULT '[]'::jsonb,
+    skincare_brands jsonb DEFAULT '[]'::jsonb,
+    makeup_brands jsonb DEFAULT '[]'::jsonb
 );
 
 CREATE TABLE ProductReviews (

@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { ProfileFormNavigationButtons } from "./ProfileForm/ProfileFormNavigationButtons";
 
 export type ProfileFormStep0Prop = {
-  gender: undefined | "female" | "male" | "other";
+  gender: ProfileGender | undefined;
   birthDate: number | undefined;
-  goals: ("create" | "discover" | "improve" | "other")[];
+  goals: ProfileGoals[];
 };
 import ProfileFormLabelledInput from "./ProfileFormLabelledInput";
+import { ProfileGender, ProfileGoals } from "@/services/types";
+import { late } from "zod";
 
 const ProfileFormStep0 = ({
   data,
@@ -21,8 +23,8 @@ const ProfileFormStep0 = ({
   // Temporary HACK to make checkboxes work with latest NextJS version
   // GitHub Issue here: https://github.com/vercel/next.js/issues/49499
   useEffect(() => {
-    setLocalData({
-      ...localData,
+    setLocalData((prevValue) => {
+      return { ...prevValue };
     });
   }, []);
 
@@ -49,6 +51,36 @@ const ProfileFormStep0 = ({
     }
   };
 
+  const Genders = [
+    {
+      value: ProfileGender.FEMALE,
+      label: "Female",
+    },
+    {
+      value: ProfileGender.MALE,
+      label: "Male",
+    },
+    {
+      value: ProfileGender.OTHER,
+      label: "Other",
+    },
+  ];
+
+  const Goals = [
+    {
+      value: ProfileGoals.CREATE,
+      label: "Create a skincare routine",
+    },
+    {
+      value: ProfileGoals.IMPROVE,
+      label: "Improve my skincare routine",
+    },
+    {
+      value: ProfileGoals.DISCOVER,
+      label: "Discover new products",
+    },
+  ];
+
   return (
     <form className="flex flex-col" onSubmit={onSubmit}>
       <fieldset className="my-3">
@@ -56,48 +88,25 @@ const ProfileFormStep0 = ({
           Which gender do you identify as?
         </legend>
         <div className="flex flex-col">
-          <ProfileFormLabelledInput
-            required
-            name="gender"
-            value="female"
-            label="Female"
-            type="radio"
-            checked={localData.gender === "female"}
-            onChange={() => {
-              setLocalData({
-                ...localData,
-                gender: "female",
-              });
-            }}
-          />
-          <ProfileFormLabelledInput
-            required
-            name="gender"
-            value="male"
-            label="Male"
-            type="radio"
-            checked={localData.gender === "male"}
-            onChange={() => {
-              setLocalData({
-                ...localData,
-                gender: "male",
-              });
-            }}
-          />
-          <ProfileFormLabelledInput
-            required
-            name="gender"
-            value="other"
-            label="Other"
-            type="radio"
-            checked={localData.gender === "other"}
-            onChange={() => {
-              setLocalData({
-                ...localData,
-                gender: "other",
-              });
-            }}
-          />
+          {Genders.map((gender) => {
+            return (
+              <ProfileFormLabelledInput
+                key={gender.label}
+                required
+                type="radio"
+                name="gender"
+                label={gender.label}
+                value={gender.value}
+                checked={localData.gender === gender.value}
+                onChange={() => {
+                  setLocalData({
+                    ...localData,
+                    gender: gender.value,
+                  });
+                }}
+              />
+            );
+          })}
         </div>
       </fieldset>
       <fieldset className="mb-3">
@@ -125,45 +134,22 @@ const ProfileFormStep0 = ({
         <legend className="mb-2 font-bold">
           What is your goal? (select as many as needed)
         </legend>
-        <ProfileFormLabelledInput
-          label="Create a skincare routine"
-          name="interests"
-          value="routine"
-          type="checkbox"
-          checked={localData.goals.includes("create")}
-          onChange={() => onGoalChange("create")}
-        />
-        <ProfileFormLabelledInput
-          label="Improve my skincare routine"
-          name="interests"
-          value="improve"
-          type="checkbox"
-          checked={localData.goals.includes("improve")}
-          onChange={() => onGoalChange("improve")}
-        />
-        <ProfileFormLabelledInput
-          label="Discover new products"
-          name="interests"
-          value="new_products"
-          type="checkbox"
-          checked={localData.goals.includes("discover")}
-          onChange={() => onGoalChange("discover")}
-        />
-        <ProfileFormLabelledInput
-          label="Other"
-          name="interests"
-          value="other"
-          type="checkbox"
-          checked={localData.goals.includes("other")}
-          onChange={() => onGoalChange("other")}
-        >
-          <input type="text" className="border" />
-        </ProfileFormLabelledInput>
+        {Goals.map((goal) => {
+          return (
+            <ProfileFormLabelledInput
+              key={goal.label}
+              type="checkbox"
+              name="interests"
+              label={goal.label}
+              value={goal.value}
+              checked={localData.goals.includes(goal.value)}
+              onChange={() => onGoalChange(goal.value)}
+            />
+          );
+        })}
       </fieldset>
       <div>
-        <ProfileFormNavigationButtons
-          onNext={onNext !== undefined ? () => onNext(localData) : undefined}
-        />
+        <ProfileFormNavigationButtons hasNext={true} />
       </div>
     </form>
   );

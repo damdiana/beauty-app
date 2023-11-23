@@ -38,7 +38,7 @@ export enum ProfileSkinType {
 export enum ProfileSkinConcern {
   ACNEE = "1",
   DULLNESS = "2",
-  Aging = "3",
+  AGING = "3",
   WRINKLES = "4",
   SUN_DAMAGE = "5",
 }
@@ -117,15 +117,15 @@ export enum ProfileMakeupBrands {
 export const ZodUserProfile = z.object({
   gender: z.nativeEnum(ProfileGender),
   birthdate: z.coerce.date().optional(),
-  goals: z.nativeEnum(ProfileGoals).array().optional(),
-  skin_types: z.nativeEnum(ProfileSkinType).array().optional(),
-  skin_concerns: z.nativeEnum(ProfileSkinConcern).array().optional(),
-  skin_conditions: z.nativeEnum(ProfileSkinConditions).array().optional(),
-  routine_products: z.nativeEnum(ProfileRoutineProducts).array().optional(),
+  goals: z.nativeEnum(ProfileGoals).array(),
+  skin_types: z.nativeEnum(ProfileSkinType).array(),
+  skin_concerns: z.nativeEnum(ProfileSkinConcern).array(),
+  skin_conditions: z.nativeEnum(ProfileSkinConditions).array(),
+  routine_products: z.nativeEnum(ProfileRoutineProducts).array(),
   using_makeup: z.boolean().optional(),
-  products_used: z.nativeEnum(ProfileProductsUsed).array().optional(),
-  skincare_brands: z.nativeEnum(ProfileSkincareBrands).array().optional(),
-  makeup_brands: z.nativeEnum(ProfileMakeupBrands).array().optional(),
+  products_used: z.nativeEnum(ProfileProductsUsed).array(),
+  skincare_brands: z.nativeEnum(ProfileSkincareBrands).array(),
+  makeup_brands: z.nativeEnum(ProfileMakeupBrands).array(),
 });
 
 export type UserProfile = z.infer<typeof ZodUserProfile>;

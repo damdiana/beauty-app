@@ -1,4 +1,5 @@
 import { ProfileView } from "@/components/ProfileView";
+import getUserServerSide from "@/services/server/UserService";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,54 +7,29 @@ export const metadata: Metadata = {
   description: "Profile",
 };
 
-const ProfilePage = () => {
+const ProfilePage = async () => {
+  const user = await getUserServerSide();
+
   return (
     <div className="w-full h-full flex">
       <div className="m-2 p-1 border w-full flex flex-col ">
         <h2 className="text-lg m-2"> My Profile </h2>
-        <ProfileView
-          userProfile={{
-            step0: {
-              gender: "female",
-              birthDate: 1995,
-              goals: [],
-            },
-            step1: {
-              skinTypes: ["combination", "oily"],
-              skinConcerns: ["acnee", "dull"],
-              skinConditions: ["eczema", "milia"],
-              routineProducts: [],
-            },
-            step2: {
-              makeup: false,
-              productsUsed: [
-                "blush",
-                "bronzer",
-                "primer",
-                "eyeshadow",
-                "contour",
-                "mascara",
-              ],
-            },
-            step3: {
-              skincareBrands: [
-                "belief",
-                "cerave",
-                "innisfree",
-                "the_ordinary",
-                "other",
-              ],
-              makeupBrands: [
-                "benefit",
-                "estee_lauder",
-                "laura_mercier",
-                "makeup_forever",
-                "chanel",
-                "charlotte_tilbury",
-              ],
-            },
-          }}
-        />
+        {user !== undefined && (
+          <ProfileView
+            userProfile={{
+              gender: user.gender,
+              goals: user.goals,
+              skin_concerns: user.skin_concerns,
+              skin_conditions: user.skin_conditions,
+              skin_types: user.skin_types,
+              makeup_brands: user.makeup_brands,
+              skincare_brands: user.skincare_brands,
+              products_used: user.products_used,
+              routine_products: user.routine_products,
+              birthdate: user.birthdate,
+            }}
+          />
+        )}
       </div>
     </div>
   );

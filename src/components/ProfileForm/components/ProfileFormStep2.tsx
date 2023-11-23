@@ -2,27 +2,12 @@ import { useEffect, useState } from "react";
 import { ProfileFormNavigationButtons } from "./ProfileForm/ProfileFormNavigationButtons";
 
 export type ProfileFormStep2Prop = {
-  makeup: boolean;
-  productsUsed: (
-    | "foundation"
-    | "concelear"
-    | "powder"
-    | "blush"
-    | "bronzer"
-    | "contour"
-    | "eyeliner"
-    | "mascara"
-    | "eyeshadow"
-    | "lipstick"
-    | "lipliner"
-    | "highlighter"
-    | "primer"
-    | "eyebrow"
-    | "other"
-  )[];
+  makeup: boolean | undefined;
+  productsUsed: ProfileProductsUsed[];
 };
 
 import ProfileFormLabelledInput from "./ProfileFormLabelledInput";
+import { ProfileProductsUsed } from "@/services/types";
 
 const ProfileFormStep2 = ({
   data,
@@ -36,8 +21,8 @@ const ProfileFormStep2 = ({
   const [localData, setLocalData] = useState<ProfileFormStep2Prop>(data);
 
   useEffect(() => {
-    setLocalData({
-      ...localData,
+    setLocalData((prevValue) => {
+      return { ...prevValue };
     });
   }, []);
 
@@ -65,6 +50,66 @@ const ProfileFormStep2 = ({
       onNext(localData);
     }
   };
+
+  const MakeupProductsUsed = [
+    {
+      label: "Foundation",
+      value: ProfileProductsUsed.FOUNDATION,
+    },
+    {
+      label: "Concelear",
+      value: ProfileProductsUsed.CONCELEAR,
+    },
+    {
+      label: "Blush",
+      value: ProfileProductsUsed.BLUSH,
+    },
+    {
+      label: "Bronzer",
+      value: ProfileProductsUsed.BRONZER,
+    },
+    {
+      label: "Contour",
+      value: ProfileProductsUsed.CONTOUR,
+    },
+    {
+      label: "Eyeliner",
+      value: ProfileProductsUsed.EYELINER,
+    },
+    {
+      label: "Mascara",
+      value: ProfileProductsUsed.MASCARA,
+    },
+    {
+      label: "Eyeshadow",
+      value: ProfileProductsUsed.EYESHADOW,
+    },
+    {
+      label: "Lipstick",
+      value: ProfileProductsUsed.LIPSTICK,
+    },
+    {
+      label: "Lipliner",
+      value: ProfileProductsUsed.LIPLINER,
+    },
+    {
+      label: "Powder",
+      value: ProfileProductsUsed.POWDER,
+    },
+    {
+      label: "Highlighter",
+      value: ProfileProductsUsed.HIGHLIGHTER,
+    },
+    {
+      label: "Primer",
+      value: ProfileProductsUsed.PRIMER,
+    },
+
+    {
+      label: "Eyebrow products (pencil, gel, ect)",
+      value: ProfileProductsUsed.EYEBROW,
+    },
+  ];
 
   return (
     <form className="flex flex-col" onSubmit={onSubmit}>
@@ -106,135 +151,23 @@ const ProfileFormStep2 = ({
         </fieldset>
         <fieldset className="mb-2 flex flex-col">
           <legend className="mb-2 font-bold"> What products you use? </legend>
-          <ProfileFormLabelledInput
-            label="Foundation"
-            value="foundation"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("foundation")}
-            onChange={() => onProductsUsedChange("foundation")}
-          />
-          <ProfileFormLabelledInput
-            label="Concelear"
-            value="concelear"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("concelear")}
-            onChange={() => onProductsUsedChange("concelear")}
-          />
-          <ProfileFormLabelledInput
-            label="Blush"
-            value="blush"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("blush")}
-            onChange={() => onProductsUsedChange("blush")}
-          />
-          <ProfileFormLabelledInput
-            label="Bronzer"
-            value="bronzer"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("bronzer")}
-            onChange={() => onProductsUsedChange("bronzer")}
-          />
-          <ProfileFormLabelledInput
-            label="Contour"
-            value="contour"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("bronzer")}
-            onChange={() => onProductsUsedChange("bronzer")}
-          />
-          <ProfileFormLabelledInput
-            label="Eyeliner"
-            value="eyeliner"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("eyeliner")}
-            onChange={() => onProductsUsedChange("eyeliner")}
-          />
-          <ProfileFormLabelledInput
-            label="Mascara"
-            value="mascara"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("mascara")}
-            onChange={() => onProductsUsedChange("mascara")}
-          />
-          <ProfileFormLabelledInput
-            label="Eyeshadow"
-            value="eyeshadow"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("eyeshadow")}
-            onChange={() => onProductsUsedChange("eyeshadow")}
-          />
-          <ProfileFormLabelledInput
-            label="Lipstick"
-            value="lipstick"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("lipstick")}
-            onChange={() => onProductsUsedChange("lipstick")}
-          />
-          <ProfileFormLabelledInput
-            label="Lipliner"
-            value="lipliner"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("lipliner")}
-            onChange={() => onProductsUsedChange("lipliner")}
-          />
-          <ProfileFormLabelledInput
-            label="Powder"
-            value="powder"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("powder")}
-            onChange={() => onProductsUsedChange("powder")}
-          />
-          <ProfileFormLabelledInput
-            label="Highlighter"
-            value="highlighter"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("highlighter")}
-            onChange={() => onProductsUsedChange("highlighter")}
-          />
-          <ProfileFormLabelledInput
-            label="Primer"
-            value="primer"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("primer")}
-            onChange={() => onProductsUsedChange("primer")}
-          />
-          <ProfileFormLabelledInput
-            label="Eyebrow products (pencil, gel, ect)"
-            value="eyebrow"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("eyebrow")}
-            onChange={() => onProductsUsedChange("eyebrow")}
-          />
-          <ProfileFormLabelledInput
-            label="Other"
-            value="other"
-            type="checkbox"
-            name="useproducts"
-            checked={localData.productsUsed.includes("other")}
-            onChange={() => onProductsUsedChange("other")}
-          >
-            <input type="text" className="border" />
-          </ProfileFormLabelledInput>
+          {MakeupProductsUsed.map((product) => {
+            return (
+              <ProfileFormLabelledInput
+                key={product.label}
+                label={product.label}
+                name="useproducts"
+                value={product.value}
+                type="checkbox"
+                checked={localData.productsUsed.includes(product.value)}
+                onChange={() => onProductsUsedChange(product.value)}
+              />
+            );
+          })}
         </fieldset>
       </div>
       <div>
-        <ProfileFormNavigationButtons
-          onPrevious={onPrevious}
-          onNext={onNext !== undefined ? () => onNext(localData) : undefined}
-        />
+        <ProfileFormNavigationButtons onPrevious={onPrevious} hasNext={true} />
       </div>
     </form>
   );
