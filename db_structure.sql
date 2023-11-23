@@ -18,11 +18,24 @@ CREATE TABLE Brands (
     name VARCHAR(255)
 );
 
+CREATE TYPE gender AS ENUM ('1', '2', '3');
+
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(256) NOT NULL,
-    full_name VARCHAR(256) NOT NULL
+    full_name VARCHAR(256) NOT NULL,
+    gender gender,
+    birthdate DATE,
+    goals jsonb,
+    skin_types jsonb,
+    skin_concerns jsonb,
+    skin_conditions jsonb,
+    routine_products jsonb,
+    using_makeup BOOLEAN,
+    products_used jsonb,
+    skincare_brands jsonb,
+    makeup_brands jsonb;
 );
 
 CREATE TABLE ProductReviews (
@@ -49,4 +62,4 @@ CREATE TABLE FavoriteProducts (
     user_id INT,
     product_id VARCHAR(255),
     PRIMARY KEY (user_id, product_id)
-) 
+)
