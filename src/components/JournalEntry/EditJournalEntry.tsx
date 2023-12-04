@@ -169,7 +169,11 @@ export const EditJournalEntry = ({
     <div
       className={`rounded-md flex flex-col border-black border-solid border-2 ${className}`}
     >
-      <div className="h-[100%] w-[100%]">
+      <div
+        className={`${
+          wizard.type === "error" ? " h-[87%] sm:h-[86%]" : "h-[100%]"
+        } w-[100%]`}
+      >
         <EditorProvider
           slotBefore={<MenuBar />}
           extensions={extensions}
