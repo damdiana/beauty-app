@@ -1,3 +1,4 @@
+import { JSONContent } from "@tiptap/react";
 import { z } from "zod";
 
 export type Category = {
@@ -13,6 +14,12 @@ export type User = {
   password: string;
   fullName: string;
 } & UserProfile;
+
+export type JournalEntry = {
+  json_content: JSONContent;
+  entry_date: Date;
+  id: number;
+};
 
 /*************** >>>> START: PROFILE ENUMS */
 export enum ProfileGender {

@@ -63,3 +63,10 @@ CREATE TABLE FavoriteProducts (
     product_id VARCHAR(255),
     PRIMARY KEY (user_id, product_id)
 )
+
+CREATE TABLE JournalEntries (
+   id SERIAL PRIMARY KEY,
+   user_id INT NOT NULL, 
+   json_content jsonb NOT NULL,
+   entry_date timestamp without time zone NOT NULL
+)

@@ -3,34 +3,30 @@
 import MonthAndDayDate from "@/components/MonthAndDayDate/MonthAndDayDate";
 import { EditJournalEntry } from "@/components/JournalEntry/EditJournalEntry";
 import { ViewJournalEntry } from "@/components/JournalEntry/ViewJournalEntry";
+import { postJournalEntry } from "@/services/JournalingAPI";
+import { JournalEntry } from "@/services/types";
 import { JSONContent } from "@tiptap/react";
 import { useState } from "react";
 
-const JournalPage = () => {
-  const [journalEntries, setJournalEntries] = useState<
-    {
-      content: JSONContent;
-      key: number;
-      date: Date;
-    }[]
-  >([]);
+const JournalPage = ({
+  initialJournalEntries,
+}: {
+  initialJournalEntries: JournalEntry[];
+}) => {
+  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([
+    ...initialJournalEntries,
+  ]);
 
   const addNewEntry = async (content: JSONContent) => {
-    const entryPromise = new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        resolve();
-      }, 1000);
-    });
-
-    await entryPromise;
-    setJournalEntries([
-      {
-        content,
-        date: new Date(),
-        key: Date.now(),
-      },
-      ...journalEntries,
-    ]);
+    let resp = await postJournalEntry(content);
+    if (resp.ok) {
+      setJournalEntries([resp.journal_entry, ...journalEntries]);
+    } else {
+      //throwing an error in order to inform the child component
+      //this way, the child component will know to catch the error
+      //and show the correct message to the user
+      throw new Error(resp.message);
+    }
   };
 
   return (
@@ -52,20 +48,20 @@ const JournalPage = () => {
         <div className="flex flex-col sm:flex-row items-center sm:justify-around justify-center w-full">
           <MonthAndDayDate date={new Date()} size="large" />
           <EditJournalEntry
-            className="w-5/6 sm:w-8/12 m-3"
+            className="w-5/6 sm:w-8/12 sm:h-[28rem] h-[30rem]  m-3"
             onSave={addNewEntry}
           />
         </div>
         {journalEntries.map((entry) => {
           return (
             <div
-              key={entry.key}
+              key={entry.id}
               className="flex flex-col sm:flex-row items-center sm:justify-around justify-center w-full mt-4 sm:mt-0"
             >
-              <MonthAndDayDate date={entry.date} size="large" />
+              <MonthAndDayDate date={entry.entry_date} size="large" />
               <ViewJournalEntry
-                content={entry.content}
-                className="sm:w-8/12 w-5/6 m-3"
+                content={entry.json_content}
+                className="sm:w-8/12 w-5/6 m-3 h-96"
               />
             </div>
           );

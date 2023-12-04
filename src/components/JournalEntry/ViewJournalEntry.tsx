@@ -25,13 +25,9 @@ export const ViewJournalEntry = ({
     ],
   });
 
-  if (!editor) {
-    return null;
-  }
-
   return (
     <div
-      className={`rounded-md border-black border-solid border-2 ${className}`}
+      className={`rounded-md border-black border-solid border-2 pb-2 pt-2 ${className}`}
     >
       <EditorContent editor={editor} />
     </div>
