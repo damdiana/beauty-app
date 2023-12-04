@@ -1,0 +1,23 @@
+.small span.date  {
+    font-size: 14px;
+}
+
+.medium span.date  {
+    font-size: 16px;
+}
+
+.large span.date  {
+    font-size: 18px;
+}
+
+.small p.calendar  {
+    font-size: 20px;
+}
+
+.medium p.calendar  {
+    font-size: 30px;
+}
+
+.large p.calendar  {
+    font-size: 40px;
+}

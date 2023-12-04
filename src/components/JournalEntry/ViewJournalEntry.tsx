@@ -4,12 +4,25 @@ import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import React from "react";
 import "./JournalEntry.css";
+import TextStyle from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
+import ListItem from "@tiptap/extension-list-item";
 
-export const ViewJournalEntry = ({ content }: { content: JSONContent }) => {
+export const ViewJournalEntry = ({
+  content,
+  className = "",
+}: {
+  content: JSONContent;
+  className?: string;
+}) => {
   const editor = useEditor({
     editable: false,
     content: content,
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      TextStyle,
+      Color.configure({ types: [TextStyle.name, ListItem.name] }),
+    ],
   });
 
   if (!editor) {
@@ -17,7 +30,9 @@ export const ViewJournalEntry = ({ content }: { content: JSONContent }) => {
   }
 
   return (
-    <div className="m-3 rounded-md border-black border-solid border-2 sm:w-8/12">
+    <div
+      className={`rounded-md border-black border-solid border-2 ${className}`}
+    >
       <EditorContent editor={editor} />
     </div>
   );

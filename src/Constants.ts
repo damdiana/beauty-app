@@ -26,8 +26,8 @@ const HEADER_NAV = [
     title: "All Categories",
   },
   {
-    href: "/categories/74",
-    title: "Eyes",
+    href: "/journaling",
+    title: "Journaling",
   },
   {
     href: "/categories/779",
@@ -35,7 +35,7 @@ const HEADER_NAV = [
   },
   {
     href: "/categories/73",
-    title: "Makup",
+    title: "Makeup",
   },
 ];
 

@@ -2,10 +2,12 @@
 import { Color } from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
-import { EditorProvider, useCurrentEditor } from "@tiptap/react";
+import { EditorProvider, JSONContent, useCurrentEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import React from "react";
+import { Editor } from "@tiptap/core";
+import React, { useRef, useState } from "react";
 import Button from "../Button-Link/Button/Button";
+import "./JournalEntry.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBold,
@@ -91,7 +93,7 @@ const MenuBar = () => {
   ];
 
   return (
-    <div className="w-full p-2 pb-3 flex justify-center sm:p-1 border-black border-b-2 border-l-0 border-r-0 border-t-0 gap-1 overflow-auto">
+    <div className="w-full p-2 pb-3 flex justify-between xl:justify-center sm:p-1 border-black border-b-2 border-l-0 border-r-0 border-t-0 gap-1 overflow-auto">
       {menuButtons.map((button, index) => (
         <Button
           key={index}
@@ -124,15 +126,72 @@ const extensions = [
   StarterKit,
 ];
 
-export const EditJournalEntry = () => {
+export const EditJournalEntry = ({
+  className = "",
+  onSave,
+}: {
+  className?: string;
+  onSave: (boxContent: JSONContent) => Promise<void>;
+}) => {
+  const editorRef = useRef<Editor | null>(null);
+
+  const [wizard, setWizard] = useState<
+    | {
+        type: "initial";
+      }
+    | {
+        type: "loading";
+      }
+    | {
+        type: "error";
+        message: string;
+      }
+  >({ type: "initial" });
+
+  const sendEntry = async () => {
+    try {
+      setWizard({ type: "loading" });
+      if (editorRef.current !== null && editorRef.current.isEmpty === false) {
+        await onSave(editorRef.current.getJSON());
+        editorRef.current.commands.clearContent();
+        setWizard({ type: "initial" });
+      } else {
+        setWizard({ type: "error", message: "An error occured" });
+      }
+    } catch (err) {
+      setWizard({ type: "error", message: "An error occured" });
+    }
+  };
+
   return (
-    <div className="m-3 rounded-md border-black border-solid border-2 sm:w-8/12">
+    <div
+      className={`rounded-md border-black border-solid border-2 ${className}`}
+    >
       <EditorProvider
         slotBefore={<MenuBar />}
         extensions={extensions}
+        onCreate={(props) => {
+          editorRef.current = props.editor;
+        }}
         // eslint-disable-next-line react/no-children-prop
         children={undefined}
       ></EditorProvider>
+      <div className="flex flex-col items-center justify-center">
+        {wizard.type === "error" && (
+          <p className="text-red-500 font-bold mb-1 ">{wizard.message}</p>
+        )}
+        <Button
+          type="submit"
+          variant="full"
+          color={`${wizard.type !== "loading" ? "black" : "beige"}`}
+          size="medium"
+          className="rounded-t-md w-full sm:w-3/12 "
+          disabled={wizard.type === "loading"}
+          onClick={sendEntry}
+        >
+          {wizard.type === "loading" ? "Loading..." : "Save"}
+        </Button>
+      </div>
     </div>
   );
 };
