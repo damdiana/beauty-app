@@ -22,12 +22,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Placeholder from "@tiptap/extension-placeholder";
 import "./JournalEntry.css";
+import { JournalEntry } from "@/services/types";
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
 
   if (!editor) {
-    return null;
+    return <div className="h-[30px] w-[60px] border"></div>;
   }
   const menuButtons = [
     {
@@ -93,7 +94,7 @@ const MenuBar = () => {
   ];
 
   return (
-    <div className="w-full p-2 pb-3 flex justify-between xl:justify-center sm:p-1 border-black border-b-2 border-l-0 border-r-0 border-t-0 gap-1 overflow-auto">
+    <div className=" p-2 pb-3 flex justify-between xl:justify-center sm:p-1 border-black border-b-2 border-l-0 border-r-0 border-t-0 gap-1 overflow-auto">
       {menuButtons.map((button, index) => (
         <Button
           key={index}
@@ -149,15 +150,16 @@ export const EditJournalEntry = ({
   >({ type: "initial" });
 
   const sendEntry = async () => {
+    if (editorRef.current === null || editorRef.current.isEmpty === true) {
+      setWizard({ type: "error", message: "An error occured" });
+      return;
+    }
+
     try {
       setWizard({ type: "loading" });
-      if (editorRef.current !== null && editorRef.current.isEmpty === false) {
-        await onSave(editorRef.current.getJSON());
-        editorRef.current.commands.clearContent();
-        setWizard({ type: "initial" });
-      } else {
-        setWizard({ type: "error", message: "An error occured" });
-      }
+      await onSave(editorRef.current.getJSON());
+      editorRef.current.commands.clearContent();
+      setWizard({ type: "initial" });
     } catch (err) {
       setWizard({ type: "error", message: "An error occured" });
     }
@@ -165,17 +167,19 @@ export const EditJournalEntry = ({
 
   return (
     <div
-      className={`rounded-md border-black border-solid border-2 ${className}`}
+      className={`rounded-md flex flex-col border-black border-solid border-2 ${className}`}
     >
-      <EditorProvider
-        slotBefore={<MenuBar />}
-        extensions={extensions}
-        onCreate={(props) => {
-          editorRef.current = props.editor;
-        }}
-        // eslint-disable-next-line react/no-children-prop
-        children={undefined}
-      ></EditorProvider>
+      <div className="h-[100%] w-[100%]">
+        <EditorProvider
+          slotBefore={<MenuBar />}
+          extensions={extensions}
+          onCreate={(props) => {
+            editorRef.current = props.editor;
+          }}
+          // eslint-disable-next-line react/no-children-prop
+          children={undefined}
+        ></EditorProvider>
+      </div>
       <div className="flex flex-col items-center justify-center">
         {wizard.type === "error" && (
           <p className="text-red-500 font-bold mb-1 ">{wizard.message}</p>
@@ -185,7 +189,7 @@ export const EditJournalEntry = ({
           variant="full"
           color={`${wizard.type !== "loading" ? "black" : "beige"}`}
           size="medium"
-          className="rounded-t-md w-full sm:w-3/12 "
+          className="rounded-t-md w-3/12 "
           disabled={wizard.type === "loading"}
           onClick={sendEntry}
         >
