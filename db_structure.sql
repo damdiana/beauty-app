@@ -26,7 +26,7 @@ CREATE TABLE Users (
     password VARCHAR(256) NOT NULL,
     full_name VARCHAR(256) NOT NULL,
     gender gender,
-    birthdate DATE,
+    birthdate timestamp without time zone,
     goals jsonb DEFAULT '[]'::jsonb,
     skin_types jsonb DEFAULT '[]'::jsonb,
     skin_concerns jsonb DEFAULT '[]'::jsonb,
