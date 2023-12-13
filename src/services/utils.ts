@@ -1,3 +1,5 @@
+import { response400 } from "@/app/utils";
+
 function formatDateTime(date: Date) {
   let formatter = new Intl.DateTimeFormat("en-GB", {
     year: "numeric",
@@ -10,4 +12,29 @@ function formatDateTime(date: Date) {
   return formatter.format(date);
 }
 
-export { formatDateTime };
+async function parseJsonFromBody(request: Request): Promise<
+  | {
+      ok: true;
+      data: JSON;
+    }
+  | {
+      ok: false;
+      message: string;
+    }
+> {
+  let body = undefined;
+  try {
+    body = await request.json();
+    return {
+      ok: true,
+      data: body,
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      message: "Body needs to be in JSON format",
+    };
+  }
+}
+
+export { formatDateTime, parseJsonFromBody };

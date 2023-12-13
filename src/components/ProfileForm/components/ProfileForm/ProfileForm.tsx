@@ -4,10 +4,10 @@ import ProfileFormStep0, { ProfileFormStep0Prop } from "../ProfileFormStep0";
 import ProfileFormStep1, { ProfileFormStep1Prop } from "../ProfileFormStep1";
 import ProfileFormStep2, { ProfileFormStep2Prop } from "../ProfileFormStep2";
 import ProfileFormStep3, { ProfileFormStep3Prop } from "../ProfileFormStep3";
-import postUserDetails from "@/services/User";
 import { ProfileGender, UserProfile } from "@/services/types";
 import { useRouter } from "next/navigation";
 import "./ProfileForm.css";
+import { updateUserDetails } from "@/services/User";
 
 const ProfileForm = ({ user }: { user: UserProfile }) => {
   const [wizard, setWizard] = useState<
@@ -115,7 +115,7 @@ const ProfileForm = ({ user }: { user: UserProfile }) => {
     const profileFormZod = transformToUserProfile(newProfileFormState);
 
     try {
-      const response = await postUserDetails(profileFormZod);
+      const response = await updateUserDetails(profileFormZod);
       if (response.ok) {
         router.replace("/profile");
         // Refresh the router to clear user details from the My profile page.
