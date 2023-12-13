@@ -8,31 +8,65 @@ type Props = {
   initialValue: string;
   type: HTMLInputTypeAttribute;
   onSave: (value: string) => void;
+  placeholder: string;
 };
 
-const EditableField = ({ label, initialValue, type, onSave }: Props) => {
+const EditableField = ({
+  label,
+  initialValue,
+  type,
+  onSave,
+  placeholder,
+}: Props) => {
   const [value, setValue] = useState(initialValue);
+  const [wizard, setWizard] = useState<
+    | {
+        type: "initial";
+      }
+    | {
+        type: "loading";
+      }
+    | {
+        type: "editable";
+      }
+    | {
+        type: "error";
+        message: string;
+      }
+  >({ type: "initial" });
 
-  const [isEditable, setIsEditable] = useState(false);
-
-  const onSubmit = (event: { preventDefault: () => void }) => {
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
-    setIsEditable(false);
-    onSave(value);
+    try {
+      setWizard({ type: "loading" });
+      await onSave(value);
+      setWizard({ type: "initial" });
+    } catch (err) {
+      if (err instanceof Error) {
+        setWizard({ type: "error", message: err.message });
+      } else {
+        setWizard({ type: "error", message: "Unable to change your name." });
+      }
+    }
   };
 
-  if (isEditable === true) {
+  if (
+    wizard.type === "editable" ||
+    wizard.type === "loading" ||
+    wizard.type === "error"
+  ) {
     return (
       <div>
         <h2 className="text-lg m-2">
           Edit your <span className="lowercase"> {label} </span>
         </h2>
-        <div className="p-1 ">
-          <form className="flex justify-betwee flex-col" onSubmit={onSubmit}>
-            <div className="flex border border-black border-solid mb-2 ">
+        <div className="p-1">
+          <form className="flex justify-between flex-col" onSubmit={onSubmit}>
+            <div className="flex justify-between border border-black border-solid">
               <input
-                className="p-2 outline-none w-full"
+                className="p-2 outline-none w-[90%] "
                 type={type}
+                placeholder={placeholder}
                 required
                 value={value}
                 onChange={(event) => {
@@ -54,24 +88,30 @@ const EditableField = ({ label, initialValue, type, onSave }: Props) => {
             <div className="flex flex-col">
               <Button
                 variant="full"
-                color="black"
+                color={`${wizard.type !== "loading" ? "black" : "beige"}`}
                 size="medium"
                 className="mb-2"
                 type="submit"
+                disabled={wizard.type === "loading"}
               >
-                Save Changes
+                {wizard.type === "loading" ? "Loading..." : "  Save Changes"}
               </Button>
               <Button
                 variant="text"
                 color="black"
                 size="medium"
                 onClick={() => {
-                  setIsEditable(false);
+                  setWizard({ type: "initial" });
                   setValue(initialValue);
                 }}
               >
                 Cancel
               </Button>
+              {wizard.type === "error" && (
+                <p className="text-red-500 text-center font-bold">
+                  {wizard.message}
+                </p>
+              )}
             </div>
           </form>
         </div>
@@ -88,7 +128,7 @@ const EditableField = ({ label, initialValue, type, onSave }: Props) => {
           color="black"
           size="medium"
           onClick={() => {
-            setIsEditable(true);
+            setWizard({ type: "editable" });
           }}
         >
           Edit

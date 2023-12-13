@@ -62,11 +62,36 @@ async function updateUser(id: number, profile: UserProfile) {
 
   await client.query(
     `UPDATE Users 
-    SET
-      ${fieldsToUpdate.join(",")}
-      WHERE id = ${id}
+     SET ${fieldsToUpdate.join(",")}
+     WHERE id = ${id}
   `,
     [...valuesToUpdate]
+  );
+}
+
+async function updateUserFullName(full_name: string, id: number) {
+  const client = await getPostgresClient();
+
+  await client.query(
+    `UPDATE Users
+     SET full_name = $1
+     WHERE id = $2
+     RETURNING full_name
+  `,
+    [full_name, id]
+  );
+}
+
+async function updateUserEmail(email: string, id: number) {
+  const client = await getPostgresClient();
+
+  await client.query(
+    `UPDATE Users
+     SET email = $1
+     WHERE id = $2
+     RETURNING email
+  `,
+    [email, id]
   );
 }
 
@@ -107,4 +132,6 @@ export {
   sanitizeUser,
   selectUserById,
   updateUser,
+  updateUserFullName,
+  updateUserEmail,
 };
