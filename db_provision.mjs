@@ -7,6 +7,8 @@ dotenv.config({
   path: ".env.local",
 });
 
+const DRY_RUN = false;
+
 const client = new pg.Client({
   connectionString: process.env.POSTGRES_URL,
 });
@@ -70,7 +72,15 @@ async function fetchAndInsertProducts(categId) {
 
     const myObjects = result.data
       .filter((product) => product.type === "products")
-      .map((product) => fromSephoraObject(product));
+      .map((product) => {
+        const brand_name =
+          result.included.find(
+            (item) =>
+              item.type === "brands" &&
+              item.id === product.relationships.brand.data.id
+          )?.attributes?.name ?? "unknown brand";
+        return fromSephoraObject(product, brand_name);
+      });
     let alreadyInsertedBrandIds = [];
     myObjects.forEach((product) => {
       console.log("Starting");
@@ -95,7 +105,7 @@ async function fetchAndInsertProducts(categId) {
   }
 }
 
-function fromSephoraObject(sephoraProduct) {
+function fromSephoraObject(sephoraProduct, brand_name) {
   console.log(sephoraProduct.attributes.name);
   return {
     id: sephoraProduct.id,
@@ -104,11 +114,17 @@ function fromSephoraObject(sephoraProduct) {
     description: sephoraProduct.attributes.description,
     ingredients: sephoraProduct.attributes.ingredients,
     images: sephoraProduct.attributes["image-urls"],
-    brand_name: sephoraProduct.attributes["brand-name"],
+    brand_name,
   };
 }
 
 async function insertCategory(id, name, slug) {
+  if (DRY_RUN) {
+    console.log(
+      `>>>>> About to insert categ_id: ${id}, categ_name: ${name}, categ_slug: ${slug}`
+    );
+    return id;
+  }
   try {
     await client.query(
       `
@@ -136,6 +152,12 @@ async function insertProduct(
   description,
   ingredients
 ) {
+  if (DRY_RUN) {
+    console.log(
+      `>>>>>  About to insert: product_id= ${id}, brand_id: ${brand_id}, product_name:${name}, categ_id: ${categ_id}. No description because it's too long. No ingredients because they are too long`
+    );
+    return;
+  }
   try {
     await client.query(
       ` INSERT INTO Products (
@@ -159,6 +181,9 @@ async function insertProduct(
 }
 
 async function insertImage(product_id, image) {
+  if (DRY_RUN) {
+    return;
+  }
   try {
     await client.query(
       `
@@ -178,6 +203,10 @@ async function insertImage(product_id, image) {
 }
 
 async function insertBrand(id, name) {
+  if (DRY_RUN) {
+    console.log(` >>>>>  About to insert brand_id: ${id},brand_name: ${name}`);
+    return;
+  }
   try {
     await client.query(
       `
