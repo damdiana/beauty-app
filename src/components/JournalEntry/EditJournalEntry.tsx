@@ -7,7 +7,6 @@ import StarterKit from "@tiptap/starter-kit";
 import { Editor } from "@tiptap/core";
 import React, { useRef, useState } from "react";
 import Button from "../Button-Link/Button/Button";
-import "./JournalEntry.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBold,
@@ -21,8 +20,9 @@ import {
   faStrikethrough,
 } from "@fortawesome/free-solid-svg-icons";
 import Placeholder from "@tiptap/extension-placeholder";
+import Mention from "@tiptap/extension-mention";
+import { suggestion } from "./suggestion";
 import "./JournalEntry.css";
-import { JournalEntry } from "@/services/types";
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -125,6 +125,15 @@ const extensions = [
   }),
   TextStyle,
   StarterKit,
+  Mention.configure({
+    HTMLAttributes: {
+      class: "mention",
+    },
+    renderLabel({ options, node }) {
+      return `${options.suggestion.char}${node.attrs.label ?? node.attrs.id}`;
+    },
+    suggestion,
+  }),
 ];
 
 export const EditJournalEntry = ({

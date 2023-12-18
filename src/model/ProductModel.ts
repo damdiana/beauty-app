@@ -92,4 +92,45 @@ async function getProducts(categoryId?: string): Promise<Product[]> {
   return productsArray as Product[];
 }
 
-export { getProduct, getProducts };
+async function searchProducts(search: string): Promise<Product[]> {
+  let query = `SELECT
+    products.id,
+    products.brand_id,
+    brands.name as "brand_name",
+    products.name,
+    products.description,
+    products.ingredients,
+    products.categ_id,
+    categories.name as "category_name",
+    productimages.image
+  FROM products
+  INNER JOIN brands ON products.brand_id = brands.id
+  INNER JOIN categories ON products.categ_id = categories.id
+  INNER JOIN productimages ON products.id = productimages.product_id
+  WHERE products.name ILIKE $1
+  LIMIT 20`;
+  const client = await getPostgresClient();
+  const products = await client.query(query, [`${search}%`]);
+
+  const productRows = products.rows as (Omit<Product, "images"> & {
+    image: string;
+  })[];
+  const productsWithImages: Record<string, Product> = {};
+
+  productRows.forEach((productRow) => {
+    const productId = productRow.id;
+    if (!productsWithImages[productId]) {
+      productsWithImages[productId] = {
+        ...productRow,
+        images: [],
+      };
+    }
+    productsWithImages[productId].images.push(productRow.image);
+  });
+
+  const productsArray = Object.values(productsWithImages);
+
+  return productsArray as Product[];
+}
+
+export { getProduct, getProducts, searchProducts };
