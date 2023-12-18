@@ -21,6 +21,6 @@ ProductCard.args = {
     id: "33",
     categ_id: 2131,
     category_name: "skincare",
-    brand_id: "3",
+    brand_id: 3,
   },
 };

@@ -48,7 +48,13 @@ async function getProduct(productId: string): Promise<Product | undefined> {
   return productRows[0] as Product;
 }
 
-async function getProducts(categoryId?: number): Promise<Product[]> {
+async function getProducts({
+  categoryId,
+  brandId,
+}: {
+  categoryId?: number;
+  brandId?: number;
+} = {}): Promise<Product[]> {
   let query = `SELECT
     products.id,
     products.brand_id,
@@ -68,6 +74,15 @@ async function getProducts(categoryId?: number): Promise<Product[]> {
   if (categoryId !== undefined) {
     query += ` WHERE categ_id=$1`;
     params.push(categoryId);
+  }
+
+  if (brandId !== undefined) {
+    if (params.length === 0) {
+      query += ` WHERE brand_id=$1`;
+    } else {
+      query += ` AND brand_id=$${params.length + 1}`;
+    }
+    params.push(brandId);
   }
   const products = await client.query(query, params);
 

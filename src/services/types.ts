@@ -21,6 +21,11 @@ export type JournalEntry = {
   id: number;
 };
 
+export type Brand = {
+  id: number;
+  name: string;
+};
+
 /*************** >>>> START: PROFILE ENUMS */
 export enum ProfileGender {
   FEMALE = "1",

@@ -24,9 +24,12 @@ function ProductScreen({ product }: { product: Product }) {
           />
         </div>
         <div className="flex-col">
-          <p className="tracking-wide uppercase text-lg">
+          <Link
+            href={`/brands/${product.brand_id}`}
+            className="tracking-wide uppercase text-lg"
+          >
             {product.brand_name}
-          </p>
+          </Link>
           <h1 className="font-bold text-xl"> {product.name} </h1>
           <Link href={`/categories/${product.categ_id}`}>
             Category: {product.category_name}

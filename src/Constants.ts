@@ -26,12 +26,12 @@ const HEADER_NAV = [
     title: "All Categories",
   },
   {
-    href: "/journaling",
-    title: "Journaling",
+    href: "/brands",
+    title: "All brands",
   },
   {
-    href: "/categories/779",
-    title: "Powder",
+    href: "/journaling",
+    title: "Journaling",
   },
   {
     href: "/categories/73",
