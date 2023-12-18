@@ -37,7 +37,7 @@ export default async function Page({
 
   try {
     [products, category] = await Promise.all([
-      getProducts(params.categoryId),
+      getProducts({ categoryId: params.categoryId }),
       getCategory(params.categoryId),
     ]);
   } catch (err) {

@@ -21,7 +21,7 @@ export async function GET(
       return response404("Category not found");
     }
 
-    let products = await getProducts(params.categoryId);
+    let products = await getProducts({ categoryId: params.categoryId });
 
     return response200({ products });
   } catch (err) {

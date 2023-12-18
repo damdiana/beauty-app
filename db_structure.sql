@@ -1,6 +1,6 @@
 CREATE TABLE Products (
     id VARCHAR(10) PRIMARY KEY,
-    brand_id VARCHAR(255),
+    brand_id INT,
     name VARCHAR(255),
     categ_id INT,
     description TEXT,
@@ -14,7 +14,7 @@ CREATE TABLE ProductImages (
 );
 
 CREATE TABLE Brands (
-    id VARCHAR(10) PRIMARY KEY,
+    id INT PRIMARY KEY,
     name VARCHAR(255)
 );
 

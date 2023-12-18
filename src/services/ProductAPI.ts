@@ -2,7 +2,7 @@ import { BASE_URL } from "@/Constants";
 
 export type Product = {
   id: string;
-  brand_id: string;
+  brand_id: number;
   name: string;
   brand_name: string;
   description: string;
