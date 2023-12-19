@@ -1,7 +1,7 @@
 import { getPostgresClient } from "@/services/server/database";
 import { Category } from "@/services/types";
 
-async function getCategory(categoryId: string): Promise<Category | undefined> {
+async function getCategory(categoryId: number): Promise<Category | undefined> {
   const client = await getPostgresClient();
   const categoryResult = await client.query(
     `

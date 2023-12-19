@@ -2,7 +2,7 @@ import { JSONContent } from "@tiptap/react";
 import { z } from "zod";
 
 export type Category = {
-  id: string;
+  id: number;
   name: string;
   slug: string;
   image: string | null;

@@ -12,7 +12,7 @@ export async function GET(
   {
     params,
   }: {
-    params: { categoryId: string };
+    params: { categoryId: number };
   }
 ) {
   try {

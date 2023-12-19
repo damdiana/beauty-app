@@ -7,7 +7,7 @@ export type Product = {
   brand_name: string;
   description: string;
   ingredients: string;
-  categ_id: string;
+  categ_id: number;
   category_name: string;
   images: string[];
 };
@@ -68,7 +68,7 @@ async function fetchProduct(productId: string): Promise<
   }
 }
 
-async function fetchProductsByCategory(categoryId: string): Promise<
+async function fetchProductsByCategory(categoryId: number): Promise<
   | {
       ok: true;
       products: Product[];
