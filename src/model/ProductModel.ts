@@ -48,7 +48,7 @@ async function getProduct(productId: string): Promise<Product | undefined> {
   return productRows[0] as Product;
 }
 
-async function getProducts(categoryId?: string): Promise<Product[]> {
+async function getProducts(categoryId?: number): Promise<Product[]> {
   let query = `SELECT
     products.id,
     products.brand_id,

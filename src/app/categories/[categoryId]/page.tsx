@@ -12,7 +12,7 @@ import { notFound } from "next/navigation";
 export async function generateMetadata({
   params,
 }: {
-  params: { categoryId: string };
+  params: { categoryId: number };
 }): Promise<Metadata> {
   let category = await getCategory(params.categoryId);
 
@@ -29,7 +29,7 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: { categoryId: string };
+  params: { categoryId: number };
 }) {
   const user = await getUserServerSide();
   let products: Product[] = [];
