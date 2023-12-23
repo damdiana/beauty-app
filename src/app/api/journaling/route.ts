@@ -10,6 +10,7 @@ import {
   readJournalEntry,
 } from "@/model/JournalingModel";
 import getUserServerSide from "@/services/server/UserService";
+import { parseJsonFromBody } from "@/services/utils";
 import { z } from "zod";
 
 export async function GET(request: Request) {
@@ -36,14 +37,11 @@ export async function POST(request: Request) {
     return response401("User not logged in");
   }
 
-  let body = undefined;
-  try {
-    body = await request.json();
-  } catch (err) {
-    return response400("Incorect format");
+  const jsonResult = await parseJsonFromBody(request);
+  if (jsonResult.ok === false) {
+    return response400(jsonResult.message);
   }
-
-  const results = requestType.safeParse(body);
+  const results = requestType.safeParse(jsonResult.data);
   if (!results.success!) {
     return response400("Incorect format");
   }

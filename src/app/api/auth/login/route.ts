@@ -5,6 +5,7 @@ import { z } from "zod";
 import { cookies } from "next/headers";
 import { encodeJWT } from "@/services/server/JWTService";
 import { AUTH_COOKIE_CONFIG, DAYS_30_SECONDS } from "@/Constants";
+import { parseJsonFromBody } from "@/services/utils";
 
 const requestType = z.object({
   email: z.string().email(),
@@ -13,14 +14,11 @@ const requestType = z.object({
 
 export async function POST(request: Request) {
   let cookiesStore = cookies();
-  let body = undefined;
-  try {
-    body = await request.json();
-  } catch (err) {
-    console.error(err);
-    return response400("Body needs to be in JSON format");
+  const jsonResult = await parseJsonFromBody(request);
+  if (jsonResult.ok === false) {
+    return response400(jsonResult.message);
   }
-  const results = requestType.safeParse(body);
+  const results = requestType.safeParse(jsonResult.data);
   if (!results.success) {
     return response400("Body needs to be in JSON format");
   }
