@@ -35,7 +35,7 @@ const ProductReviewsSection = ({
       </h2>
       {productReviews.length === 0 && (
         <div className="flex items-center">
-          <p className="font-bold mx-2"> No reviews for this product yet </p>
+          <p className="font-bold mx-2 my-4">No reviews for this product yet</p>
           <FontAwesomeIcon icon={faFaceFrownOpen} className="h-5 w-5" />
         </div>
       )}
