@@ -12,7 +12,7 @@ function ProductScreen({ product }: { product: Product }) {
 
   return (
     <>
-      <div className="grid grid-cols-2 m-4 p-4">
+      <div className=" flex flex-col sm:grid sm:grid-cols-2 m-4 p-4">
         <div>
           <ProductImages
             images={product.images.map((src) => {
@@ -30,7 +30,7 @@ function ProductScreen({ product }: { product: Product }) {
           >
             {product.brand_name}
           </Link>
-          <h1 className="font-bold text-xl"> {product.name} </h1>
+          <h1 className="font-bold sm:text-xl text-lg"> {product.name} </h1>
           <Link href={`/categories/${product.categ_id}`}>
             Category: {product.category_name}
           </Link>

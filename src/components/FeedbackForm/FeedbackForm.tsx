@@ -88,7 +88,7 @@ const FeedbackForm = ({
             type="text"
             required
             maxLength={80}
-            className="p-2 w-2/6 border-solid border-black border text-center"
+            className="p-2 w-full sm:w-2/6 border-solid border-black border text-center"
           />
         </div>
         <div className=" item-center">
@@ -104,7 +104,7 @@ const FeedbackForm = ({
           <textarea
             name="review"
             required
-            className="p-2 w-2/6 border-solid border-black border"
+            className="p-2 w-full sm:w-2/6 border-solid border-black border"
             placeholder="I used this product for a month and my skin is more glowy"
             rows={10}
             cols={80}
