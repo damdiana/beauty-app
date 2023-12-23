@@ -11,6 +11,7 @@ import {
   insertReview,
 } from "@/model/ProductReviewsModel";
 import getUserServerSide from "@/services/server/UserService";
+import { parseJsonFromBody } from "@/services/utils";
 import { z } from "zod";
 
 const requestType = z.object({
@@ -27,14 +28,11 @@ export async function POST(request: Request) {
     if (user === undefined) {
       return response401("User not logged in");
     }
-    let body = undefined;
-    try {
-      body = await request.json();
-    } catch (err) {
-      return response400("Incorect format");
+    const jsonResult = await parseJsonFromBody(request);
+    if (jsonResult.ok === false) {
+      return response400(jsonResult.message);
     }
-
-    const results = requestType.safeParse(body);
+    const results = requestType.safeParse(jsonResult.data);
     if (!results.success!) {
       return response400("Incorect format");
     }
