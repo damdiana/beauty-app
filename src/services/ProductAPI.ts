@@ -40,6 +40,34 @@ async function fetchProducts(): Promise<
   }
 }
 
+async function searchProducts(searchQuery: string): Promise<
+  | {
+      ok: true;
+      products: Product[];
+    }
+  | {
+      ok: false;
+      message: string;
+    }
+> {
+  let resp = await fetch(`${BASE_URL}/api/products/search/${searchQuery}`, {
+    cache: "no-store",
+  });
+  if (resp.ok) {
+    let { data }: { data: Product[] } = await resp.json();
+    return {
+      ok: true,
+      products: data,
+    };
+  } else {
+    let jsonResp = await resp.json();
+    return {
+      ok: false,
+      message: jsonResp.message ?? "Something went wrong. Please try again.",
+    };
+  }
+}
+
 async function fetchProduct(productId: string): Promise<
   | {
       ok: true;
@@ -96,4 +124,4 @@ async function fetchProductsByCategory(categoryId: number): Promise<
   }
 }
 
-export { fetchProducts, fetchProductsByCategory, fetchProduct };
+export { fetchProducts, fetchProductsByCategory, fetchProduct, searchProducts };

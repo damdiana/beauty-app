@@ -7,6 +7,7 @@ import "./JournalEntry.css";
 import TextStyle from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
+import Mention from "@tiptap/extension-mention";
 
 export const ViewJournalEntry = ({
   content,
@@ -22,6 +23,16 @@ export const ViewJournalEntry = ({
       StarterKit,
       TextStyle,
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
+      Mention.configure({
+        HTMLAttributes: {
+          class: "mention",
+        },
+        renderLabel({ options, node }) {
+          return `${options.suggestion.char}${
+            node.attrs.label ?? node.attrs.id
+          }`;
+        },
+      }),
     ],
   });
 
