@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 
     return response200({
       message: "Updated the user full name.",
-      full_name: newUser?.fullName,
+      full_name: newUser?.full_name,
     });
   } catch (err) {
     console.error("error", err);

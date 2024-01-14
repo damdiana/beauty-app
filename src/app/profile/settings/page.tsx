@@ -9,7 +9,7 @@ async function ProfileSettings() {
   // that's why we don't have specific redirect code in this component
 
   if (user !== undefined) {
-    return <UserSettings fullName={user.fullName} email={user.email} />;
+    return <UserSettings fullName={user.full_name} email={user.email} />;
   }
 }
 

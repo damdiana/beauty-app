@@ -12,7 +12,7 @@ async function selectUserById(id: number): Promise<User | undefined> {
   if (response.rowCount === 0) {
     return undefined;
   } else {
-    const user = decodeUserFromDB(response.rows[0]);
+    const user = response.rows[0];
     return user;
   }
 }
@@ -25,7 +25,7 @@ async function selectUser(email: string): Promise<User | undefined> {
   if (response.rowCount === 0) {
     return undefined;
   } else {
-    const user = decodeUserFromDB(response.rows[0]);
+    const user = response.rows[0];
     return user;
   }
 }
@@ -110,19 +110,6 @@ function sanitizeUser(user: User) {
   let newUser = { ...user } as Partial<User>;
   delete newUser.password;
   return newUser;
-}
-
-function decodeUserFromDB(dbUser: DB_User): User {
-  const copyDbUser: Omit<DB_User, "full_name"> & { full_name?: string } = {
-    ...dbUser,
-  };
-  const fullName = dbUser.full_name;
-  delete copyDbUser.full_name;
-
-  return {
-    ...copyDbUser,
-    fullName,
-  };
 }
 
 export {
