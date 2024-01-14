@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     const reviewData = {
       ...parsedBody,
       user_id: user.id,
-      full_name: user.fullName,
+      full_name: user.full_name,
       product_name: product.name,
     };
 

@@ -33,7 +33,7 @@ const Header = ({ nav, user, className }: Props) => {
               icon={faUser}
               className="mr-2 h-5 w-5 text-black"
             />
-            {user.fullName}
+            {user.full_name}
             <div className="p-0 md:p-2">
               <ProfileSideNav className="absolute top-full right-0 hidden w-52 rounded shadow-md m-0" />
             </div>

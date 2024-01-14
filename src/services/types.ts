@@ -12,7 +12,7 @@ export type User = {
   email: string;
   id: number;
   password: string;
-  fullName: string;
+  full_name: string;
 } & UserProfile;
 
 export type JournalEntry = {
